@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('/');
     Route::get("dashboard", [DashboardController::class, 'index'])->name("dashboard");
 
+    
     Route::get("profile",[ProfileController::class,'index'])->name('profile.index');
     Route::post("profile/update",[ProfileController::class,'update'])->name('profile.update');
 
