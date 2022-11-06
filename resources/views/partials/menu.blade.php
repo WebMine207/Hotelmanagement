@@ -43,14 +43,18 @@
                          data-kt-menu="true">
                          <!--begin::Menu item-->
                          <div class="menu-item px-5 my-1">
-                             <a href="" class="menu-link px-5">Account
+                             <a href="#" class="menu-link px-5">Account
                                  Settings</a>
                          </div>
                          <!--end::Menu item-->
                          <!--begin::Menu item-->
                          <div class="menu-item px-5">
-                             <a href="" class="menu-link px-5">Sign Out</a>
+                         <a href="{{ route('logout') }}" class="dropdown-item dropdown-footer" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Logout</a>
                          </div>
+                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                          <!--end::Menu item-->
                      </div>
                      <!--end::Menu-->
@@ -86,17 +90,7 @@
                      <span class="menu-title">Dashboard</span>
                  </a>
              </div>
-            
-            <div class="menu-item">
-                <a class="menu-link" href="">
-                    <span class="menu-icon">
-                        <span class="fas fa-sitemap"></span>
-                    </span>
-                    <span class="menu-title">Business Services</span>
-                </a>
-            </div>
-
-           
+                         
          </div>
          <!--end::Menu-->
      </div>

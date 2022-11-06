@@ -44,11 +44,11 @@ class LoginController extends Controller
     {
         if(!$user->status==1) {
             Auth::logout();
-            return redirect()->route('login')->withError( "Sorry, account not approved by admin yet.");
+            return redirect()->route('login')->with('toast-error','Sorry, account not approved by admin yet.');
 
         } else {
-            //Redirect to the intended page after login.
-            return redirect($this->redirectTo)->withSuccess("Login successfully.");
+            // \Session::flash('toast-success','Login successfully');
+            return redirect($this->redirectTo)->with('toast-success','Login successfully');
         }
     }
 

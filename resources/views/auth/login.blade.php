@@ -1,76 +1,68 @@
-@extends('layouts.app')
-
+@extends('layouts.auth')
+@section('title','Login')
 @section('content')
-    <div class="login-box">
-        <!-- /.login-logo -->
-        <div class="card card-outline card-primary">
-            <div class="card-header text-center">
-                <a href="{{ route('/') }}" class="h1"><b>{{ ENV('app.name',"Hotel Management") }}</b></a>
-            </div>
-            <div class="card-body">
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
+<div class="d-flex flex-column flex-lg-row-fluid py-10">
+    <!--begin::Content-->
+    <div class="d-flex flex-center flex-column flex-column-fluid">
+        <!--begin::Wrapper-->
+        <div class="w-lg-500px p-10 p-lg-15 mx-auto">
+            <!--begin::Form-->
+            <form class="form w-100" method="post" novalidate="novalidate" id="kt_sign_in_form" action="{{ route('login') }}">
+                @csrf
+                <!--begin::Heading-->
+                <div class="text-center mb-10">
+                    <h1 class="text-dark mb-3">Log In to Backend</h1>
+                </div>
+                <!--begin::Heading-->
+                @include('components.alerts')
+                <!--begin::Input group-->
+                <div class="fv-row mb-10">
+                    <label class="form-label fs-6 fw-bolder text-dark">Email</label>
+                    <!--begin::Input-->
+                    <input placeholder="Email" tabindex="1" class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror" type="text" name="email" autofocus autocomplete="off" value="{{old('email')}}" />
+                    @error('email')
+                    <div class="fv-plugins-message-container invalid-feedback"><div data-field="email" data-validator="emailAddress">{{$message}}</div></div>
+                    @enderror
+                    <!--end::Input-->
+                </div>
+                <div class="fv-row mb-10">
+                    <div class="d-flex flex-stack mb-2">
+                        <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
                     </div>
-                @endif
-                <p class="login-box-msg">Sign in to start your session</p>
-
-                <form action="{{ route('login') }}" method="post">
-                    @csrf
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                        @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </form>
-
-                <!-- /.social-auth-links -->
-
-                <p class="mb-1">
-                    <a href="{{ route('password.request') }}">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
-                </p>
-            </div>
-            <!-- /.card-body -->
+                    <!--begin::Input-->
+                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" autocomplete="off" placeholder="Password"  />
+                    @error('password')
+                    <div class=" invalid-feedback"><div >{{$message}}</div></div>
+                    @enderror
+                    <!--end::Input-->
+                    <a href="{{ route('password.request') }}"> Forgot password ?</a>
+                </div>
+                <div class="text-center">
+                    <!--begin::Submit button-->
+                    <button type="submit" tabindex="3" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
+                        <span class="indicator-label">Continue</span>
+                        <span class="indicator-progress">Please wait...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                    </button>
+                </div>
+            </form>
+            <!--end::Form-->
+            <a href="{{ route('register') }}" class="text-center">Create Account</a>
         </div>
-        <!-- /.card -->
+        <!--end::Wrapper-->
     </div>
+    <!--end::Content-->
+    <!--begin::Footer-->
+    <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
+        <!--begin::Links-->
+        <div class="d-flex flex-center fw-bold fs-6">
+           {!! footer_title() !!}
+        </div>
+        <!--end::Links-->
+    </div>
+    <!--end::Footer-->
+</div>
+@endsection
+@section('external-scripts')
+
 @endsection

@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <base href="{{ url('') }}">
-    <title>{{ config('app.name') }} | {{ $page_title }}</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
