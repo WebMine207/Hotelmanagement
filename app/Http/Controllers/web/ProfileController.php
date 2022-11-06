@@ -11,9 +11,11 @@ use phpseclib3\Crypt\Hash;
 
 class ProfileController extends Controller
 {
+ 
     public function index()
     {
-        return view('auth.profile');
+        $user = User::where('id',Auth::user()->id)->first();
+        return view('auth.profile',compact('user'));
     }
 
     public function update(ProfileRequest $request)
@@ -23,8 +25,11 @@ class ProfileController extends Controller
             if(isset($request->email) && !empty($request->email)){
                 $data['email']=trim($request->email);
             }
-            if(isset($request->username) && !empty($request->username)){
-                $data['name']=trim($request->username);
+            if(isset($request->first_name) && !empty($request->first_name)){
+                $data['first_name']=trim($request->first_name);
+            }
+            if(isset($request->last_name) && !empty($request->last_name)){
+                $data['last_name']=trim($request->last_name);
             }
             if(count($data)>0){
                 User::where('id',Auth::user()->id)->update($data);
@@ -32,7 +37,7 @@ class ProfileController extends Controller
             return redirect()->route('profile.index')->withSuccess("Profile updated successfully.");
         }
         catch (\Exception $exception){
-            return redirect()->route('dashboard')->withError("Something wrong");
+            return redirect()->route('home')->withError("Something wrong");
         }
     }
 

@@ -9,17 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    /**
+     * Display a statstics on dashboard.
+     *
+     * @return Application|Factory|View single Property
+     */
     public function index()
     {
-        $data=[];
-        if(Auth::user()->role==1){
-            $data['users'] = User::where('role',3)->count();
-            $data['hotels'] = User::has('hotel')->where('role',2)->count();
-        }
-        else
-        {
-
-        }
-        return view('dashboard',compact('data'));
+        return view('index');
     }
 }

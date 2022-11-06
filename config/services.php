@@ -29,5 +29,13 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'encryption' => [
+        'type' => env("ENC_TYPE","AES-128-ECB"),
+        'secret' => env("ENC_SECRET","4pU3$(`v&[l!`V`y"),
+    ],
+    'recaptcha' => [
+        'sitekey' => env('RECAPTCHA_SITEKEY'),
+        'secret' => env('RECAPTCHA_SECRET'),
+    ],
 
 ];

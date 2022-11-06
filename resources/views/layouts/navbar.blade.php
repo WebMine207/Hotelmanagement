@@ -2,7 +2,7 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
     data-accordion="false">
     <li class="nav-item">
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ route('home') }}"
            class="nav-link {{ request()->is(['dashboard','/']) ? 'active' : '' }}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -11,7 +11,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('users.index') }}"
+        <a href="{{ route('home') }}"
            class="nav-link {{ request()->is(['users','users/*']) ? 'active' : '' }}">
             <i class="nav-icon far fa-calendar-alt"></i>
             <p>
@@ -20,7 +20,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('hotels.index') }}"
+        <a href="{{ route('home') }}"
            class="nav-link {{ request()->is(['hotels','hotels/*']) ? 'active' : '' }}">
             <i class="nav-icon far fa-image"></i>
             <p>
@@ -29,7 +29,7 @@
         </a>
     </li>
         <li class="nav-item">
-            <a href="{{ route('booking.index') }}"
+            <a href="{{ route('home') }}"
                class="nav-link {{ request()->is(['bookings','bookings/*']) ? 'active' : '' }}">
                 <i class="nav-icon far fa-image"></i>
                 <p>
@@ -52,7 +52,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
             data-accordion="false">
             <li class="nav-item">
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('hmoe') }}"
                    class="nav-link {{ request()->is(['dashboard','/']) ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
