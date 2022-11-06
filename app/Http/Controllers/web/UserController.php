@@ -12,13 +12,44 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    protected $limit;
+
+    /*For limit of pagination in the users module */
+    public function __construct()
+    {
+        $this->limit = 10;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('users.index');
+        $query = User::select('*');
+
+         /*Search Filter */
+        if($request->has('search_keyword') && $request->search_keyword != ""){
+            $query = $query->where(function($q) use($request){
+                $q->where('first_name', 'LIKE', '%'.$request->search_keyword.'%');
+                $q->orWhere('last_name', 'LIKE', '%'.$request->search_keyword.'%');
+                $q->orWhere('email', 'LIKE', '%'.$request->search_keyword.'%');
+                $q->orWhere('mobile_number', 'LIKE', '%'.$request->search_keyword.'%');
+            });
+        }
+        
+        $users = $query->paginate($this->limit)->appends($request->all());
+        /* Ajax search*/
+        if($request->ajax()){
+            $view = view('components.users_table',compact('users'))->render();
+            return response()->json(['status'=>200,'message','content'=>$view]);
+        }
+        return view('users.index',compact('users'));
     }
 
     /**

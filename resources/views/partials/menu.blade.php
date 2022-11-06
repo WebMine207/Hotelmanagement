@@ -1,7 +1,7 @@
  <!--begin::Aside Toolbarl-->
  <div class="aside-toolbar flex-column-auto" id="kt_aside_toolbar">
      <!--begin::User-->
-     <div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
+     <div class="aside-user d-flex align-items-sm-center justify-content-center py-2">
          <!--begin::Symbol-->
 
          <!--end::Symbol-->
@@ -12,10 +12,10 @@
                  <!--begin::Info-->
                  <div class="flex-grow-1 me-2">
                      <!--begin::Username-->
-                     <a href="Javascript:;" class="text-white text-hover-primary fs-6 fw-bold">{{ Session::get('user_name') }}</a>
+                     <a href="Javascript:;" class="text-white text-hover-primary fs-6 fw-bold">{{ Auth::user()->full_name }}</a>
                      <!--end::Username-->
                      <!--begin::Description-->
-                     <span class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ Session::get('user_email') }}</span>
+                     <span class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ Auth::user()->email }}</span>
                      <!--end::Description-->
                  </div>
                  <!--end::Info-->
@@ -43,14 +43,12 @@
                          data-kt-menu="true">
                          <!--begin::Menu item-->
                          <div class="menu-item px-5 my-1">
-                             <a href="#" class="menu-link px-5">Account
-                                 Settings</a>
+                             <a href="{{ route('profile.index') }}" class="menu-link px-5">My Profile</a>
                          </div>
                          <!--end::Menu item-->
                          <!--begin::Menu item-->
                          <div class="menu-item px-5">
-                         <a href="{{ route('logout') }}" class="dropdown-item dropdown-footer" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">Logout</a>
+                         <a href="{{ route('logout') }}" class="menu-link px-5" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                          </div>
                          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
@@ -80,6 +78,7 @@
          <!--begin::Menu-->
          <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
              id="#kt_aside_menu" data-kt-menu="true">
+             
              <div class="menu-item">
                  <a class="menu-link {{getActiveClass(['home'])}}" href="{{ route('home') }}">
                      <span class="menu-icon">
@@ -88,6 +87,17 @@
                          <!--end::Svg Icon-->
                      </span>
                      <span class="menu-title">Dashboard</span>
+                 </a>
+             </div>
+
+             <div class="menu-item">
+                 <a class="menu-link {{getActiveClass(['users'])}}" href="{{ route('users.index') }}">
+                     <span class="menu-icon">
+                         <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                         <span class="fas fa-user"></span>
+                         <!--end::Svg Icon-->
+                     </span>
+                     <span class="menu-title">Users</span>
                  </a>
              </div>
                          

@@ -37,6 +37,18 @@ class User extends Authenticatable
         'deleted_at'
     ];
 
+    public function getFullNameAttribute()
+    {
+        if($this->first_name != "" && $this->last_name != ""){
+            $name = $this->first_name.' '.$this->last_name;
+        }elseif($this->name != ""){
+            $name = $this->name;
+        }else{
+            $name = '';
+        }
+        return $name;
+    }
+    
     /**
      * The attributes that should be cast.
      *

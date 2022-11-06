@@ -3,7 +3,7 @@
 
 <head>
     <base href="{{ url('') }}">
-    <title>{{ config('app.name', 'Kingdom') }} | Error 404 </title>
+    <title>{{ config('app.name', 'Hotel management') }} | Error 404 </title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />

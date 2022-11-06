@@ -15,7 +15,7 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/backend_style.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/custom/css/login.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
 </head>
 <body id="kt_body" class="bg-body">
@@ -35,7 +35,7 @@
 							</a>
 							<!--end::Logo-->
 							<!--begin::Title-->
-							<h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Welcome to Kingdom</h1>
+							<h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Welcome</h1>
 							<!--end::Title-->
 						</div>
 						<!--end::Content-->
@@ -43,7 +43,6 @@
 					<!--end::Wrapper-->
 				</div>
 				<!--end::Aside-->
-
                 @yield('content')
                 <!--end::Body-->
 			</div>
@@ -54,6 +53,10 @@
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
     <!--end::Global Javascript Bundle-->
+    <!--Parsley -->
+    <script src="{{ asset('assets/js/parsley.min.js') }}"></script>
+    <script src="{{ asset('assets/js/parsley.js') }}"></script>
+    <!--end::Parsley-->
     <!--begin::Page Custom Javascript(used by this page)-->
     <!--end::Page Custom Javascript-->
     <!--end::Javascript-->

@@ -7,7 +7,7 @@
         <!--begin::Wrapper-->
         <div class="w-lg-500px p-10 p-lg-15 mx-auto">
             <!--begin::Form-->
-            <form class="form w-100" method="post" novalidate="novalidate" id="kt_sign_in_form" action="{{ route('login') }}">
+            <form class="loginForm" method="post" action="{{ route('login') }}">
                 @csrf
                 <!--begin::Heading-->
                 <div class="text-center mb-10">
@@ -19,7 +19,8 @@
                 <div class="fv-row mb-10">
                     <label class="form-label fs-6 fw-bolder text-dark">Email</label>
                     <!--begin::Input-->
-                    <input placeholder="Email" tabindex="1" class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror" type="text" name="email" autofocus autocomplete="off" value="{{old('email')}}" />
+                    <input placeholder="Email" class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror" type="text" name="email" autofocus autocomplete="off" value="{{old('email')}}"  data-parsley-required="true" data-parsley-type="email" data-parsley-errors-container="#email-errors" data-parsley-required-message="{{ __('Please enter email') }}"/>
+                    <span class="text-danger" id="email-errors"></span>
                     @error('email')
                     <div class="fv-plugins-message-container invalid-feedback"><div data-field="email" data-validator="emailAddress">{{$message}}</div></div>
                     @enderror
@@ -30,7 +31,9 @@
                         <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
                     </div>
                     <!--begin::Input-->
-                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" autocomplete="off" placeholder="Password"  />
+                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" autocomplete="off" placeholder="Password" data-parsley-required="true"
+                    data-parsley-required-message="{{ __('Please enter password') }}" data-parsley-errors-container="#password-errors"/>
+                    <span class="text-danger" id="password-errors"></span>
                     @error('password')
                     <div class=" invalid-feedback"><div >{{$message}}</div></div>
                     @enderror
@@ -64,5 +67,5 @@
 </div>
 @endsection
 @section('external-scripts')
-
+<script src="{{ asset('assets/custom/js/login.js')}}"></script>
 @endsection

@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <base href="{{ url('') }}">
-    <title>{{ config('app.name') }} | @yield('title')</title>
+    <title>{{ config('app.name') }} | @yield('tab_title')</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <!--end::Fonts-->
     <!--begin::Page Vendor Stylesheets(used by this page)-->
-    <link href="{{ asset('assets/plugins/custom/leaflet/leaflet.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
         type="text/css" />
     <!--end::Page Vendor Stylesheets-->
@@ -22,8 +21,6 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/backend_style.css') }}" rel="stylesheet" type="text/css" />
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key={{env('GOOGLE_MAPS_API_KEY')}}"></script>
     <!--end::Global Stylesheets Bundle-->
 </head>
 <body id="kt_body" class="header-tablet-and-mobile-fixed aside-enabled">
@@ -40,7 +37,7 @@
                 @include('partials.menu')
                 <!--end::Aside menu-->
                 <!--begin::Footer-->
-                <div class="aside-footer flex-column-auto py-5" id="kt_aside_footer">
+                <div class="aside-footer flex-column-auto py-5">
                 </div>
                 <!--end::Footer-->
             </div>
@@ -96,13 +93,15 @@
     <!--begin::Global Javascript Bundle(used by all pages)-->
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/form_validation.js?v=' . time()) }}"></script>
     <script src="{{ asset('assets/js/backend_jquery.js?v=' . time()) }}"></script>
     <!--end::Javascript-->
+    <!--Parsley -->
+    <script src="{{ asset('assets/js/parsley.min.js') }}"></script>
+    <script src="{{ asset('assets/js/parsley.js') }}"></script>
+    <!--end::Parsley-->
 
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/additional-methods.min.js') }}"></script>
-    <script src="{{asset('assets/js/jquery.inputmask.bundle.min.js')}}"></script>
 
     <!--start::External Javascript-->
     @yield('external-scripts')

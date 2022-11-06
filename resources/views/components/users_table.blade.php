@@ -7,8 +7,8 @@
                 </div>
             </th>
             <th>Full Name</th>
-            <th>Mobile Number</th>
-            <th>User Type</th>
+            <!-- <th>Mobile Number</th> -->
+            <!-- <th>User Type</th> -->
             <th>Created At</th>
             <th>Status</th>
             <th width="15%">Action</th>
@@ -37,14 +37,14 @@
                     </div>
                     <!--begin::User details-->
                 </td>
-                <td>@if(!empty($user->country)) {{ '+'. $user->country->phone }} @endif <span class="mobile_input_mask">{{ $user->mobile_number }}</span></td>
-                <td>
+                <!-- <td>@if(!empty($user->country)) {{ '+'. $user->country->phone }} @endif <span class="mobile_input_mask">{{ $user->mobile_number }}</span></td> -->
+                <!-- <td>
                     @if($user->role_id == 2)
                         <span class="badge badge-light-primary">Customer</span>
                     @elseif($user->role_id == 3)
                         <span class="badge badge-light-success">Business</span>
                     @endif
-                </td>
+                </td> -->
                 <td>{{ date('m-d-Y', strtotime($user->created_at)); }}</td>
                 <td>
                     <?php
@@ -52,7 +52,7 @@
                     $ids=$user->id;
                     ?>
                     <div class="form-check form-switch  form-check-custom form-check-solid">
-                        <input class="form-check-input update_status" data-title="user" name="status" type="checkbox" href="{{route('user.update_status',getEncrypted($user->id))}}" {{$checked}} />
+                        <input class="form-check-input update_status" data-title="user" name="status" type="checkbox" href="#" {{$checked}} />
                     </div>
                 </td>
                 <td>

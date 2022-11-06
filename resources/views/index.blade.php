@@ -1,6 +1,7 @@
 @extends('layouts.app')
+@section('tab_title','Dashboard')
 @section('title')
-    {!! setBreadCrumb('Dashboard',route('home')) !!}
+{!! setBreadCrumb('Dashboard') !!}
 @endsection
 @section('content')
 <div class="d-flex flex-column-fluid">
