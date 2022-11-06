@@ -5,7 +5,7 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{{ route('/') }}" class="h1"><b>{{ config('app.name',"Hotel Management") }}</b></a>
+                <a href="{{ route('/') }}" class="h1"><b>{{ ENV('app.name',"Hotel Management") }}</b></a>
             </div>
             <div class="card-body">
                 @if (session('status'))

@@ -11,15 +11,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $data=[];
-        if(Auth::user()->role==1){
-            $data['users'] = User::where('role',3)->count();
-            $data['hotels'] = User::has('hotel')->where('role',2)->count();
-        }
-        else
-        {
+        $page_title = "Dashboard";
+        // $data=[];
+        // if(Auth::user()->role==1){
+        //     $data['users'] = User::where('role',3)->count();
+        //     $data['hotels'] = User::has('hotel')->where('role',2)->count();
+        // }
+        // else
+        // {
 
-        }
-        return view('dashboard',compact('data'));
+        // }
+        return view('index',compact('page_title'));
     }
 }
