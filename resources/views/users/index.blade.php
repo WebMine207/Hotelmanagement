@@ -11,14 +11,13 @@
         <div class="card">
             <!--begin::Card header-->
                 <div class="card-header d-block w-100">
-                    <!--begin::Card title-->
                     <div class="card-title d-block w-100">
                         <div class="row">
                             <!--begin::Search-->
                             <div class="col-md-3 mt-1">
                                 <label>Search</label>
                                 <div class="d-flex align-items-center position-relative my-1">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <!--begin::Svg Icon -->
                                     <span class="svg-icon svg-icon-1 position-absolute ms-6"><i class="fas fa-search"></i></span>
                                     <!--end::Svg Icon-->
                                     <form id="filter_form" action="{{route('users.index')}}" method="GET">
@@ -39,8 +38,8 @@
                                 <select name="user_type" id="user_type" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
                                     title="User Type Filter">
                                     <option value="">All</option>
-                                    <option value="2">Customer</option>
-                                    <option value="3">Business</option>
+                                    <option value="2">Hotel</option>
+                                    <option value="3">Customer</option>
                                 </select>
                             </div>
 
@@ -60,31 +59,15 @@
                                     title="Status Filter">
                                     <option value="">All</option>
                                     <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value="2">Inactive</option>
                                 </select>
                             </div>
                             <div class="col-md-1 mx-4 mt-8">
                                 <button type="button" class="btn btn-secondary" id="reset_filter_btn">Reset</button>
                             </div>
                         </div>
-
                         <hr class='text-muted'>
-                        <div class="row">
-
-                            <div class="col-md-3">
-                                <label>Bulk Update</label>
-                                    <select class="form-select form-select-solid" name="bulk_update_status" data-control="select2"  data-hide-search="true" id="bulk_update_status">
-                                        <option value="">Status</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
-                                    </select>
-                            </div>
-                            <div class="col-md-2 mt-8">
-                                    <!-- <button type="button" class="btn btn-primary" id="bulk_update_status_btn" data-url="#" data-title="users">Bulk Update</button> -->
-                            </div>
-                        </div>
                     </div>
-                    <!--end::Card title-->
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->

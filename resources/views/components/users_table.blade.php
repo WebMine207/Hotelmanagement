@@ -7,8 +7,7 @@
                 </div>
             </th>
             <th>Full Name</th>
-            <!-- <th>Mobile Number</th> -->
-            <!-- <th>User Type</th> -->
+            <th>Mobile Number</th>
             <th>Created At</th>
             <th>Status</th>
             <th width="15%">Action</th>
@@ -28,23 +27,14 @@
 
                     <!--begin::User details-->
                     <div class="d-flex flex-column">
-
                         <div class="text-gray-800">   {{$user->full_name}}</div>
-
                         <span>{{ $user->email }}</span>
-
                     </div>
                     </div>
                     <!--begin::User details-->
                 </td>
-                <!-- <td>@if(!empty($user->country)) {{ '+'. $user->country->phone }} @endif <span class="mobile_input_mask">{{ $user->mobile_number }}</span></td> -->
-                <!-- <td>
-                    @if($user->role_id == 2)
-                        <span class="badge badge-light-primary">Customer</span>
-                    @elseif($user->role_id == 3)
-                        <span class="badge badge-light-success">Business</span>
-                    @endif
-                </td> -->
+                <td><span class="mobile_input_mask">{{ $user->mobile_number }}</span></td>
+                
                 <td>{{ date('m-d-Y', strtotime($user->created_at)); }}</td>
                 <td>
                     <?php
