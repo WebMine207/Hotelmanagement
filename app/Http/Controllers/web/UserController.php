@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\web\UserRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -32,6 +33,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query = User::select('*');
+        // dd($request->all());
 
          /*Search Filter */
         if($request->has('search_keyword') && $request->search_keyword != ""){
@@ -42,7 +44,27 @@ class UserController extends Controller
                 $q->orWhere('mobile_number', 'LIKE', '%'.$request->search_keyword.'%');
             });
         }
-        
+        /* From & To Date filter */
+        if ($request->get('fromdate')) {
+            $from_date=Carbon::createFromFormat('m-d-Y',$request->get('fromdate'))->format('Y-m-d');
+            $to_date=Carbon::createFromFormat('m-d-Y',$request->get('todate'))->format('Y-m-d');
+            if ($request->get('fromdate') != 0) {
+                $query->whereBetween('created_at', [$from_date . ' 00:00:00', $to_date . ' 23:59:59']);
+            }
+        }
+        /**
+         * User type filter
+         */
+        if($request->has('user_type') && $request->user_type != ""){
+            $query = $query->where('role',$request->user_type);
+        }
+        /**
+         * status filter
+         */
+        if($request->has('status') && $request->status != ""){
+            $query = $query->where('status',$request->status);
+        }
+
         $users = $query->paginate($this->limit)->appends($request->all());
         /* Ajax search*/
         if($request->ajax()){

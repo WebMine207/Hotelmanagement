@@ -91,11 +91,9 @@
              </div>
 
              <div class="menu-item">
-                 <a class="menu-link {{getActiveClass(['users'])}}" href="{{ route('users.index') }}">
+                 <a class="menu-link {{getActiveClass(['users.index','users.edit'])}}" href="{{ route('users.index') }}">
                      <span class="menu-icon">
-                         <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                          <span class="fas fa-user"></span>
-                         <!--end::Svg Icon-->
                      </span>
                      <span class="menu-title">Users</span>
                  </a>
