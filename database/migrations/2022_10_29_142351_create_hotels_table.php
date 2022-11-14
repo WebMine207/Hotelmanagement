@@ -18,8 +18,10 @@ class CreateHotelsTable extends Migration
             $table->bigInteger('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('listing_id')->nullable();
+            $table->string('feature_image')->nullable();
             $table->string('title')->nullable();
             $table->string('slug')->unique();
+            $table->integer('total_room')->nullable();
             $table->string('description', 2000)->nullable();
             $table->integer('guest')->nullable();
             $table->string('house_rules', 2000)->nullable();
