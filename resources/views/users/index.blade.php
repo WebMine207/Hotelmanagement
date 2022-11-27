@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('tab_title','Users list')
 @section('title')
-{!! setBreadCrumb('Users list') !!}
+<li class="breadcrumb-item text-dark"> {{'Users list'}}</li>
 @endsection
 @section('content')
 <div class="d-flex flex-column-fluid">

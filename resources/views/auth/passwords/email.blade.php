@@ -46,7 +46,7 @@
     <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
         <!--begin::Links-->
         <div class="d-flex flex-center fw-bold fs-6">
-           {!! footer_title() !!}
+        {{'Copyright'}} &copy; {{  date('Y').' ' . env('APP_NAME'). ' All rights reserved. '}}
         </div>
         <!--end::Links-->
     </div>

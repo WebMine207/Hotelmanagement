@@ -75,7 +75,7 @@
                         class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
-                            <a href="Javascript:;" class="text-gray-800 text-hover-primary">{!! footer_title() !!}</a>
+                            <a href="Javascript:;" class="text-gray-800 text-hover-primary"> {{'Copyright'}} &copy; {{  date('Y').' ' . env('APP_NAME'). ' All rights reserved. '}}</a>
                         </div>
                         <!--end::Copyright-->
                     </div>

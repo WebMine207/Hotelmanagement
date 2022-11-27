@@ -30,6 +30,6 @@ Route::middleware('auth')->group(function (){
 
     Route::get("change_password",[ProfileController::class,'password_index'])->name('password.index');
     
-    Route::resource('users', UserController::class)->name('users');
+    Route::resource('users', UserController::class);
 });
 Auth::routes();

@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'email' => "dev@admin.com",
                 'mobile_number' => "9182836565",
                 'gender' => 'male',
-                'role' => '2',
+                'role' => '1',
                 'password' => Hash::make('secret')
             ],
 	        [

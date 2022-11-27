@@ -33,9 +33,9 @@
                     </div>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="{{route('hotels.edit',getEncrypted($hotel->id))}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
+                    <a class="btn btn-sm btn-primary" href="{{route('hotels.edit',$hotel->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
 
-                    <button class="btn btn-sm btn-danger delete_row" data-title="hotel" data-href="{{route('hotels.destroy',getEncrypted($hotel->id))}}" data-user_id ="{{getEncrypted($hotel->id)}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
+                    <button class="btn btn-sm btn-danger delete_row" data-title="hotel" data-href="{{route('hotels.destroy',$hotel->id)}}" data-user_id ="{{getEncrypted($hotel->id)}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
                 </td>
             </tr>
         @endforeach

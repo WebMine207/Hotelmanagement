@@ -10,7 +10,7 @@
             <!--begin::Breadcrumb-->
             <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 pt-1">
                 <!--begin::Item-->
-                {!! setBreadCrumb('Home', route('home') ,1) !!}
+                <li class="breadcrumb-item text-muted"><a href="{{ route('home') }}">{{'Home'}}</a></li>
                 <!--end::Item-->
                 @yield('title')
             </ul>

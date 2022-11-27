@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('tab_title','Users details')
 @section('title')
-{!! setBreadCrumb('Users details') !!}
+<li class="breadcrumb-item text-muted"> {{'Users details'}}</li>
 @endsection
 @section('content')
 

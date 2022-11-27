@@ -80,7 +80,7 @@
              id="#kt_aside_menu" data-kt-menu="true">
              
              <div class="menu-item">
-                 <a class="menu-link {{getActiveClass(['home'])}}" href="{{ route('home') }}">
+                 <a class="menu-link {{ Route::currentRouteName() == route('home') ? 'active' : '' }}" href="{{ route('home') }}">
                      <span class="menu-icon">
                          <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                          <span class="fas fa-home"></span>
@@ -91,7 +91,8 @@
              </div>
 
              <div class="menu-item">
-                 <a class="menu-link {{getActiveClass(['users.index','users.edit'])}}" href="{{ route('users.index') }}">
+                
+                 <a class="menu-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}" href="{{ route('users.index') }}">
                      <span class="menu-icon">
                          <span class="fas fa-user"></span>
                      </span>

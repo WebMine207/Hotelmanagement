@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\User;
 use Exception;
-use Illuminate\Http\JsonResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\api\UsersRequest;
 
 class UsersController extends ResponseController {
@@ -15,7 +16,7 @@ class UsersController extends ResponseController {
 
       method : POST
 
-      input : mobile_number=98563214774
+      input : mobile_number=98563214774, login_type= 1:mobilenumber,2=google
 
       url : /api/login
      */
@@ -23,20 +24,41 @@ class UsersController extends ResponseController {
     public function login(UsersRequest $request): JsonResponse
     {
         try {
-            $mobile_number=$request->mobile_number;
-            $otp = $this->_generateOtp();
-            $user_details = User::where(['mobile_number' => $mobile_number, 'phone_code' => $request->phone_code, 'status' => 1])->first();
-            if (is_null($user_details)) {
-                return $this->_sendErrorResponse("Invalid mobile number", $request->all());
+
+            $input_data=$request->validated();
+            if((int) $input_data['login_type']==1){
+                $mobile_number=$input_data['mobile_number'];
+                $phone_code=$input_data['phone_code'];
+                $user_details = User::where(['mobile_number' => $mobile_number, 'phone_code' => $phone_code,'role'=>3])->first();
+                if(is_null($user_details)){
+                    User::where(['mobile_number' => $mobile_number, 'phone_code' => $phone_code])->update(['otp'=>null]);
+                    $otp = $this->_generateOtp();
+                    $user_details=new User();
+                    $user_details->otp=$otp;
+                    $user_details->phone_code=$phone_code;
+                    $user_details->mobile_number=$mobile_number;
+                    $user_details->status=1;
+                    $user_details->role=3;
+                    $user_details->save();
+                }
             }
-
-
-            $user_details->otp = $otp;
-            if ($user_details->save()) {
-                $user_details['otp'] = $otp;
-                $user_details['user_id'] = $user_details->user_id;
-
+            else{
+                $google_token=$input_data['google_token'];
+                $user_details = User::where(['google_token' => $google_token,'role'=>3])->first();
+                if(is_null($user_details)){
+                    $user_details=new User();
+                    $user_details->google_token=$google_token;
+                    $user_details->status=1;
+                    $user_details->role=3;
+                    $user_details->save();
+                }
             }
+            if((int)$user_details->status!=1){
+                return $this->_sendErrorResponse("Please contact admin for approve.",[],400);
+            }
+            $user_details=Auth::loginUsingId($user_details->id);
+            $user_details['token'] = $user_details->createToken('token')->accessToken;
+
             return $this->_sendResponse("Login successfully.", $user_details);
         } catch (Exception $e) {
             return $this->_sendErrorResponse("Unable to process.", $e->getMessage(), 500);
@@ -48,7 +70,7 @@ class UsersController extends ResponseController {
 
       method : POST
 
-      input : otp=123
+      input : otp=123456
 
       url : /api/otp_verification
      */
@@ -56,18 +78,26 @@ class UsersController extends ResponseController {
     public function otp_verification(UsersRequest $request): JsonResponse
     {
         try {
-            $userObj = User::where(["status" => 1, "otp" => $request->otp, "id" => $request->user_id])->first();
+            $otp=(int) trim($request->otp);
+            $phone_code=(int) $request->phone_code;
+            $mobile_number=(int) $request->mobile_number;
+            $user_id=$request->user_id;
+            $user_details=[];
+            $userObj = User::where(["status" => 1, "otp" => $otp,"phone_code"=>$phone_code,"mobile_number"=>$mobile_number, "id" =>$user_id ,'role'=>3])->first();
             if ($userObj) {
-                if ($userObj->otp == trim($request->otp)) {
-
-                    //do not update otp for static mobile
+                if ($userObj->otp == $otp) {
                     $userObj->otp = null;
                     $userObj->save();
-
                     $user_details = User::findOrFail($userObj->id);
                 }
+                else{
+                    return $this->_sendErrorResponse("Please enter valid otp.",[],400);
+                }
             }
-            return $this->_sendResponse("OTP.", $userObj);
+            else{
+                return $this->_sendErrorResponse("Please enter valid details.",[],400);
+            }
+            return $this->_sendResponse("OTP Verified Successfully.", $user_details);
         } catch (Exception $e) {
             return $this->_sendErrorResponse("Unable to process.", $e->getMessage(), 500);
         }
@@ -86,18 +116,17 @@ class UsersController extends ResponseController {
     public function resend_otp(UsersRequest $request): JsonResponse
     {
         try {
-            $patient_details = User::where(["status" => 1, 'phone_code' => $request->phone_code, "mobile_number" => $request->mobile_number])->first();
-            if (is_null($patient_details)) {
+            $user_details = User::where(["status" => 1, 'phone_code' => $request->phone_code, "mobile_number" => $request->mobile_number])->first();
+            if (is_null($user_details)) {
                 return $this->_sendErrorResponse("Invalid mobile number and phone code", $request->all(), 200);
             }
-            $userObj = User::where(["status" => 1, "id" => $patient_details->user_id])->first();
+            $userObj = User::where(["status" => 1, "id" => $user_details->id])->first();
             if ($userObj) {
                 $otp = $this->_generateOtp();
 
                 $userObj->otp = $otp;
                 if ($userObj->save()) {
                     $user_details['otp'] = $otp;
-                    $user_details['user_id'] = $patient_details->user_id;
                     return $this->_sendResponse("OTP.", $user_details);
                 } else {
                     return $this->_sendErrorResponse("There was an error sending OTP.", $request->all());
@@ -105,41 +134,6 @@ class UsersController extends ResponseController {
             } else {
                 return $this->_sendErrorResponse("No Data Found.", $request->all(), 400);
             }
-        } catch (Exception $e) {
-            return $this->_sendErrorResponse("Unable to process.", $e->getMessage(), 500);
-        }
-    }
-
-    /*
-      User registration
-
-      method : POST
-
-      input : email='abc@gmail.com', username='abc', password='123456789', country ='India',
-      country_code=91, mobile_number='9874563211
-
-      url : /api/registration
-     */
-
-    public function registration(UsersRequest $request): JsonResponse
-    {
-        try {
-            $details=[];
-            $otp = $this->_generateOtp();
-            $user = new User;
-            $user->username = $request->username;
-            $user->full_name = $request->username;
-            $user->email = $request->email;
-            $user->password = $request->password;
-            $user->otp = $otp;
-            $user->account_type = 2;
-            $user->role_id = 5;
-            $user->status = 1;
-            if ($user->save()) {
-
-                $details['user'] = User::with('get_patient_details')->findOrFail($user->id);
-            }
-            return $this->_sendResponse("Registration successfully.", $details['user']);
         } catch (Exception $e) {
             return $this->_sendErrorResponse("Unable to process.", $e->getMessage(), 500);
         }
@@ -157,22 +151,45 @@ class UsersController extends ResponseController {
 
     public function get_profile(Request $request) {
         try {
-            $userObj = User::with('get_patient_details')->findOrFail($request->user()->id);
-
-
-                return $this->_sendResponse("Profile details retrieved successfully.", $userObj);
+            $userObj = User::where(['status'=>1,'id'=>$request->user()->id,'role'=>3])->first();
+            return $this->_sendResponse("Profile details retrieved successfully.", $userObj);
         } catch (Exception $e) {
             return $this->_sendErrorResponse("Unable to process.", $e->getMessage(), 500);
         }
     }
 
-    public function update_user_details(UsersRequest $request): JsonResponse
+    public function update_user_details(UsersRequest $request)
     {
         try {
-
-
-
-            return $this->_sendResponse("Profile details updated successfully.");
+            $data=[];
+            $input_data=$request->validated();
+            if(isset($input_data['google_token'])){
+                $data['google_token']=$input_data['google_token'];
+            }
+            if(isset($input_data['first_name'])){
+                $data['first_name']=$input_data['first_name'];
+            }
+            if(isset($input_data['last_name'])){
+                $data['last_name']=$input_data['last_name'];
+            }
+            if(isset($input_data['email'])){
+                $data['email']=$input_data['email'];
+            }
+            if(isset($input_data['birth_date'])){
+                $data['birth_date']=$input_data['birth_date'];
+            }
+            if(isset($input_data['profile_picture'])){
+                $image = request()->file('profile_picture');
+                $file_name = time() . "_" . rand(0000, 9999) . '.' . $image->getClientOriginalExtension();
+                $destinationPath = 'uploads/users';
+                $image->move($destinationPath,$image->getClientOriginalName());
+                $data['profile_picture']=$file_name;
+            }
+            $auth_id=$request->user()->id;
+            if(count($data)>0){
+                User::where('id',$auth_id)->update($data);
+            }
+            return $this->_sendResponse("Profile details updated successfully.",Auth::user());
         } catch (Exception $e) {
             return $this->_sendErrorResponse("Something went wrong", $e->getMessage(), 500);
         }
@@ -185,6 +202,6 @@ class UsersController extends ResponseController {
 
     public function _generateOtp(): int
     {
-        return rand(1000, 9999);
+        return rand(100000, 999999);
     }
 }

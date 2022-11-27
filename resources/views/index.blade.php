@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('tab_title','Dashboard')
 @section('title')
-{!! setBreadCrumb('Dashboard') !!}
+<li class="breadcrumb-item text-muted">{{'Dashboard'}} </li>
 @endsection
 @section('content')
 <div class="d-flex flex-column-fluid">

@@ -13,6 +13,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class HotelController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+    
     /**
      * Display a listing of the resource.
      *

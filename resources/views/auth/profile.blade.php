@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('tab_title','My Profile')
 @section('title')
-{!! setBreadCrumb('My Profile') !!}
+<li class="breadcrumb-item text-muted">{{'My Profile'}} </li>
 @endsection
 @section('content')
 <!--begin::Post-->
@@ -94,7 +94,7 @@
                         <!--begin::Edit-->
                         <div id="kt_signin_password_edit" class="flex-row-fluid d-none">
                             <!--begin::Form-->
-                            <form action="{{route('home',getEncrypted('1'))}}"  class="form" novalidate="novalidate">
+                            <form action="{{route('home')}}"  class="form" novalidate="novalidate">
                                 @csrf
                                 <div class="row mb-1">
                                     <div class="col-lg-4">

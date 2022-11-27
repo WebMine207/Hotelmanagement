@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\web\UserRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\PhoneCode;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -84,51 +85,6 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function lists(Request $request)
-    {
-        try {
-        $users = User::query();
-        $users->where('role',3);
-        if(!isset($request->order)){
-            $users->orderBy('created_at','desc');
-        }
-        return DataTables::of($users)
-            ->editColumn('status',function (User $user){
-                $is_active=(int)$user->status==1?"checked":"";
-                return "<div class='form-group'>
-                                        <div class='custom-control custom-switch'>
-                                            <input type='checkbox' class='custom-control-input update_status' value='$user->id' id='customSwitch$user->id' $is_active>
-                                            <label class='custom-control-label' for='customSwitch$user->id'></label>
-                                        </div>
-                                    </div>";
-            })
-            ->addColumn('action',function (User $user){
-                return '<a class="btn btn-primary btn-sm" href="'.route('users.show',$user->id).'">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="'.route('users.edit',$user->id).'">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <a class="btn btn-danger btn-sm button_user_delete" data-url="'.route('users.destroy',$user->id).'" href="#" >
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Delete
-                                    </a>';
-            })
-            ->escapeColumns([])
-            ->make(true);
-        }
-        catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
-        }
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -152,7 +108,7 @@ class UserController extends Controller
                 return redirect()->route('users.index')->withSuccess("Users added successfully.");
             }
             else{
-                return redirect()->route('users.index')->withError("Users not added.Please try again.");
+                return redirect()->route('users.index')->withError("something went wrong.");
             }
         }
         catch (\Exception $exception){
@@ -171,12 +127,12 @@ class UserController extends Controller
         try {
             $user=User::where('id',$id)->first();
             if(is_null($user)){
-                return redirect()->route('users.index')->withError("User not found.");
+                return redirect()->route('users.index')->with('toast-error','User not found');
             }
             return view('users.show',compact('user'));
         }
         catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
+            return redirect()->route('users.index')->with('toast-error',"Something went wrong");
         }
     }
 
@@ -190,13 +146,18 @@ class UserController extends Controller
     {
         try {
             $user=User::where('id',$id)->first();
-            if(is_null($user)){
-                return redirect()->route('users.index')->withError("User not found.");
+            $phoneCode = PhoneCode::where(function($q){
+                $q->where('phone','!=','+1');
+                $q->orWhere('code','US');
+            })->get();
+            if($user){
+                return view('users.create_update',compact('user','phoneCode'));
             }
-            return view('users.edit',compact('user'));
+            return redirect()->route('users.index')->with('toast-error','User not found');
         }
         catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
+            dd($exception);
+            return redirect()->route('users.index')->with('toast-error',"Something went wrong");
         }
     }
 
@@ -207,8 +168,9 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UserRequest $request, int $id)
+    public function update(UserRequest $request)
     {
+        $userId = Auth::user()->id;
         try {
             $status = [1,2];
             $input_data = $request->validated();
