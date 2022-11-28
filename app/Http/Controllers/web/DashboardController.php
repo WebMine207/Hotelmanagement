@@ -16,6 +16,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $customers = User::Where('role',2)->where('status',1)->count();
+        $hotels = Hotel::count();
+        return view('index',compact('customers','hotels'));
     }
 }

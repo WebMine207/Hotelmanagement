@@ -33,8 +33,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::select('*');
-        // dd($request->all());
+        $query = User::select('*')
+                ->where('role','!=',1);
 
          /*Search Filter */
         if($request->has('search_keyword') && $request->search_keyword != ""){
@@ -151,7 +151,7 @@ class UserController extends Controller
                 $q->orWhere('code','US');
             })->get();
             if($user){
-                return view('users.create_update',compact('user','phoneCode'));
+                return view('users.update',compact('user','phoneCode'));
             }
             return redirect()->route('users.index')->with('toast-error','User not found');
         }

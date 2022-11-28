@@ -10,7 +10,7 @@
             <!--begin::Breadcrumb-->
             <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 pt-1">
                 <!--begin::Item-->
-                <li class="breadcrumb-item text-muted"><a href="{{ route('home') }}">{{'Home'}}</a></li>
+                <li class="breadcrumb-item text-muted"><a href="{{ route('home') }}">{{'Home'}}</a> &nbsp;{{' - '}}</li>
                 <!--end::Item-->
                 @yield('title')
             </ul>

@@ -29,4 +29,12 @@ class Hotel extends Model
         'updated_at',
         'deleted_at'
     ];
+    
+    /**
+     * get hotel owner name
+     */
+    public function owner()
+    {
+        return $this->hasOne(User::class,'id','user_id'); 
+    }
 }

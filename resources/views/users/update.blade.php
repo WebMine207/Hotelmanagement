@@ -6,17 +6,11 @@
 @section('content')
 <div class="d-flex flex-column-fluid">
     <div class="container-xxl">
-        <!--begin::sub category Row-->
         <div class="row g-xl-8">
-            <!--begin:: column-->
             <div class="col-xl-8">
-                <!--begin::sub category-->
                 <div class="post d-flex flex-column-fluid" id="kt_post">
-                    <!--begin::Container-->
                     <div id="kt_content_container" class="container">
-                        <!--begin::Card-->
                         <div class="card">
-                            <!--begin::Card body-->
                             <div class="card-body">
                                 <h3 class="card-title align-items-start flex-column mb-5">
                                     <span class="fw-bolder text-dark">Edit User</span>
@@ -92,71 +86,17 @@
                                         <!--end::Button-->
                                         <!--begin::Button-->
                                         <a href="{{route('users.index')}}" class="btn btn-light me-3">Cancel</a>
-
                                     </div>
                                 </form>
                             </div>
-                            <!--end::Card body-->
                         </div>
-                        <!--end::Card-->
                     </div>
-                    <!--end::Container-->
                 </div>
-                <!--end::sub category-->
             </div>
-            <!--end:: column-->
         </div>
-        <!--end::sub category Row-->
     </div>
 </div>
 @endsection
 @section('external-scripts')
-<script>
-    var id='{{$user->id}}';
-
-        $("#edit_users_form").validate({
-        rules: {
-            first_name: {
-                required:true ,
-                noSpace:true,
-            },
-            last_name: {
-                required:true ,
-                noSpace:true,
-            },
-            country_code:{
-                required:true ,
-            },
-            email: {
-                checkemail:true,
-				required: true,
-	            mobile_number: {
-                required:true ,
-                input_mask_mobile_number:true,
-            },
-        },
-        messages: {
-            first_name: 'Please enter first name',
-            last_name: 'Please enter last name',
-            email:{
-                required:"Please enter email",
-                remote:"Email is already exists",
-                checkemail:"Please enter valid email",
-            },
-            mobile_number: {
-                required:"Please enter mobile number",
-                input_mask_mobile_number:"Please enter a valid number",
-            },
-            phone_code:{
-                required:"Please choose any country code",
-            }
-        },
-        submitHandler: function (form) {
-            return true;
-        },
-        success: function(label,element) {
-            label.parent().removeClass('has-danger');
-        },
-    });
-</script>
+    <script src="{{ asset('assets/js/custom/user.js')}}"></script>
 @endsection

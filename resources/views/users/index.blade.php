@@ -16,9 +16,9 @@
                             <!--begin::Search-->
                             <div class="col-md-3 mt-1">
                                 <label>Search</label>
-                                <div class="d-flex align-items-center position-relative my-1">
+                                <div class="position-relative my-1">
                                     <!--begin::Svg Icon -->
-                                    <span class="svg-icon svg-icon-1 position-absolute ms-6"><i class="fas fa-search"></i></span>
+                                    <span class="svg-icon svg-icon-1 position-absolute mt-4 mx-2"><i class="fas fa-search"></i></span>
                                     <!--end::Svg Icon-->
                                     <form id="filter_form" action="{{route('users.index')}}" method="GET">
                                         <input type="hidden" name="orderbycolumn" class="input-sm form-control" id="form-orderbycolumn">
@@ -28,7 +28,7 @@
                                         <input type="hidden" name="todate" class="input-sm form-control" id="form-todate">
                                         <input type="hidden" name="user_type" class="input-sm form-control" id="form-user_type">
                                         <input type="hidden" name="page" value="1" id="filter_page">
-                                        <input type="text" name="search_keyword" class="form-control form-control-solid w-230px ps-14" placeholder="Search" />
+                                        <input type="text" name="search_keyword" class="form-control form-control-solid w-230px ps-14 py-6" placeholder="Search" />
                                     </form>
                                 </div>
                             </div>
@@ -38,18 +38,18 @@
                                 <select name="user_type" id="user_type" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
                                     title="User Type Filter">
                                     <option value="">All</option>
-                                    <option value="2">Hotel</option>
-                                    <option value="3">Customer</option>
+                                    <option value="2">Customer</option>
+                                    <option value="3">Hotel</option>
                                 </select>
                             </div>
 
                             <div class="col-md-3 mt-2">
                                 <label>From</label>
-                                <input type="text" id="fromdate" placeholder="mm-dd-yyyy" class="form-control datepicker form-control-solid">
+                                <input type="text" id="fromdate" placeholder="mm-dd-yyyy" class="form-control datepicker form-control-solid  py-6">
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label>To</label>
-                                <input type="date" id="todate" placeholder="mm-dd-yyyy" class="form-control datepicker form-control-solid">
+                                <input type="date" id="todate" placeholder="mm-dd-yyyy" class="form-control datepicker form-control-solid py-6">
                             </div>
                         </div>
                         <div class="row d-flex justify-content-between">

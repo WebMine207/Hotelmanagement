@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\web\HotelsRequest;
 use App\Models\Hotel;
 use App\Models\User;
+use App\Models\PhoneCode;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -13,25 +14,57 @@ use Yajra\DataTables\Facades\DataTables;
 
 class HotelController extends Controller
 {
-
+    
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    protected $limit;
+
+    /*For limit of pagination in the users module */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->limit = 10;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('hotels.index');
+        $owners = User::where('role',3)->get();
+        $query = Hotel::select('*');
+
+         /*Search Filter */
+        if($request->has('search_keyword') && $request->search_keyword != ""){
+            $query = $query->where(function($q) use($request){
+                $q->where('title', 'LIKE', '%'.$request->search_keyword.'%');
+                $q->orWhere('total_room', 'LIKE', '%'.$request->search_keyword.'%');
+            });
+        }
+        /**
+         * User type filter
+         */
+        if($request->has('user_type') && $request->user_type != ""){
+            $query = $query->where('role',$request->user_type);
+        }
+        /**
+         * status filter
+         */
+        if($request->has('status') && $request->status != ""){
+            $query = $query->where('status',$request->status);
+        }
+
+        $hotels = $query->paginate($this->limit)->appends($request->all());
+        /* Ajax search*/
+        if($request->ajax()){
+            $view = view('components.hotels_table',compact('hotels'))->render();
+            return response()->json(['status'=>200,'message','content'=>$view]);
+        }
+        return view('hotels.index',compact('hotels','owners'));
     }
 
     /**
@@ -41,52 +74,8 @@ class HotelController extends Controller
      */
     public function create()
     {
-        return view('hotels.create');
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function lists(Request $request)
-    {
-        try {
-            $hotels = Hotel::query();
-            if(!isset($request->order)){
-                $hotels->orderBy('created_at','desc');
-            }
-            return DataTables::of($hotels)
-                ->editColumn('status',function (Hotel $hotel){
-                    $is_active=(int)$hotel->status==1?"checked":"";
-                    return "<div class='form-group'>
-                                        <div class='custom-control custom-switch'>
-                                            <input type='checkbox' class='custom-control-input update_status' value='$hotel->id' id='customSwitch$hotel->id' $is_active>
-                                            <label class='custom-control-label' for='customSwitch$hotel->id'></label>
-                                        </div>
-                                    </div>";
-                })
-                ->addColumn('action',function (Hotel $hotel){
-                    return '<a class="btn btn-primary btn-sm" href="'.route('hotels.show',$hotel->id).'">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="'.route('hotels.edit',$hotel->id).'">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <a class="btn btn-danger btn-sm button_user_delete" data-url="'.route('hotels.destroy',$hotel->id).'" href="#" >
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Delete
-                                    </a>';
-                })
-                ->escapeColumns([])
-                ->make(true);
-        }
-        catch (\Exception $exception){
-            return redirect()->route('hotels.index')->withError("Something wrong");
-        }
+        $phone_codes = PhoneCode::get();
+        return view('hotels.create',compact('phone_codes'));
     }
 
     /**
@@ -97,33 +86,10 @@ class HotelController extends Controller
      */
     public function store(HotelsRequest $request)
     {
-        DB::beginTransaction();
         try {
-            $status = [1,2];
-            $input_data = $request->validated();
-            $user=new User;
-            $user->name=trim($input_data['hotel_name']);
-            $user->email=trim($input_data['email']);
-            $user->password=bcrypt($input_data['password']);
-            $user->role=2;
-            $user->status=1;
-            $user->save();
-            $hotel = new Hotel();
-            $hotel->name=trim($input_data['hotel_name']);
-            $hotel->user_id=$user->id;
-            $hotel->thumbnail_image="default.jpg";
-            $hotel->status=in_array($input_data['status'],$status) ? $input_data['status'] : 1;
-            if($hotel->save()){
-                DB::commit();
-                return redirect()->route('hotels.index')->withSuccess("Hotels added successfully.");
-            }
-            else{
-                DB::rollback();
-                return redirect()->route('hotels.index')->withError("Hotels not added.Please try again.");
-            }
+
         }
         catch (\Exception $exception){
-            DB::rollback();
             return redirect()->route('hotels.index')->withError("Something wrong");
         }
     }
@@ -164,7 +130,7 @@ class HotelController extends Controller
             return view('hotels.edit',compact('hotel'));
         }
         catch (\Exception $exception){
-            return redirect()->route('hotels.index')->withError("Something wrong");
+            return redirect()->route('hotels.index')->withError("Something went wrong");
         }
     }
 

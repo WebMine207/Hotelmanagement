@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('tab_title','Hotels list')
 @section('title')
-{!! setBreadCrumb('Hotels list') !!}
+<li class="breadcrumb-item text-dark"> {{'Hotels list'}}</li>
 @endsection
 @section('content')
 <div class="d-flex flex-column-fluid">
@@ -16,37 +16,48 @@
                             <!--begin::Search-->
                             <div class="col-md-3 mt-1">
                                 <label>Search</label>
-                                <div class="d-flex align-items-center position-relative my-1">
+                                <div class=" position-relative my-1">
                                     <!--begin::Svg Icon -->
-                                    <span class="svg-icon svg-icon-1 position-absolute ms-6"><i class="fas fa-search"></i></span>
+                                    <span class="svg-icon svg-icon-1 position-absolute mt-4 mx-2"><i class="fas fa-search"></i></span>
                                     <!--end::Svg Icon-->
-                                    <form id="filter_form" action="{{route('users.index')}}" method="GET">
+                                    <form id="filter_form" action="{{route('hotels.index')}}" method="GET">
                                         <input type="hidden" name="status" class="input-sm form-control" id="form-status">
-                                        <input type="hidden" name="fromdate" class="input-sm form-control" id="form-fromdate">
-                                        <input type="hidden" name="todate" class="input-sm form-control" id="form-todate">
                                         <input type="hidden" name="page" value="1" id="filter_page">
-                                        <input type="text" name="search_keyword" class="form-control form-control-solid w-230px ps-14" placeholder="Search" />
+                                        <input type="text" name="search_keyword" class="form-control form-control-solid w-230px ps-14 py-6" placeholder="Search" />
                                     </form>
                                 </div>
                             </div>
                             <!--end::Search-->
                             <div class="col-md-3 mt-2">
-                                <label>User Type</label>
-                                <select name="user_type" id="user_type" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
-                                    title="User Type Filter">
+                                <label>Hotel Type</label>
+                                <select name="hotel_type" id="user_type" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
+                                    title="Hotel Type Filter">
                                     <option value="">All</option>
-                                    <option value="2">Hotel</option>
-                                    <option value="3">Customer</option>
+                                    <option value="motel">Motel</option>
+                                    <option value="resort">Resort</option>
+                                    <option value="boutique">Boutique</option>
                                 </select>
                             </div>
 
                             <div class="col-md-3 mt-2">
-                                <label>From</label>
-                                <input type="text" id="fromdate" placeholder="dd-mm-yyyy" class="form-control datepicker form-control-solid">
+                                <label>Owner</label>
+                                <select name="owner" id="owner" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
+                                    title="Hotel owner Filter">
+                                    <option value="">All</option>
+                                    @foreach($owners  as $owner)
+                                        <option value="{{$owner->id}}">{{ ucfirst($owner->full_name) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+
                             <div class="col-md-3 mt-2">
-                                <label>To</label>
-                                <input type="date" id="todate" placeholder="dd-mm-yyyy" class="form-control datepicker form-control-solid">
+                            <label>status</label>
+                                <select name="status" id="status" class="form-select form-select-solid" data-control="select2"  data-hide-search="true"
+                                    title="Status Filter">
+                                    <option value="">All</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row d-flex justify-content-between">
@@ -64,6 +75,9 @@
                             </div>
                         </div>
                         <hr class='text-muted'>
+                        <div style="text-align: end;">
+                            <a  class="btn btn-primary" href="{{ route('hotels.create') }}"> {{'+ Add '}}</a>
+                        </div>
                     </div>
                 </div>
                 <!--end::Card header-->

@@ -1,11 +1,6 @@
 <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="kt_table_users">
     <thead>
         <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0" style="vertical-align: middle;">
-            <th>
-                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                    <input type="checkbox" class="form-check-input" name="select_all" value="1" id="search-select-all">
-                </div>
-            </th>
             <th>Full Name</th>
             <th>Mobile Number</th>
             <th>Created At</th>
@@ -17,25 +12,21 @@
         @if(count($users)>0)
         @foreach($users as $user)
             <tr class="py-5 fw-bold  border-bottom border-gray-300 fs-6">
-
-                <td>
-                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                        <input type="checkbox" name="users_id[]" value="{{$user->id}}" class="form-check-input selected_rows" id="bulk_update_id">
-                    </div>
-                </td>
                 <td class="sorting_1">
-
                     <!--begin::User details-->
                     <div class="d-flex flex-column">
-                        <div class="text-gray-800">   {{$user->full_name}}</div>
-                        <span>{{ $user->email }}</span>
-                    </div>
+                        <div class="text-gray-800"> @if(!empty($user->full_name))  {{$user->full_name}} @else {{ '-' }} @endif</div>
+                            <span>{{ $user->email }}</span>
+                        </div>
+                        <div>
+                            <span>{{ $user->mobile_number }}</span>
+                        </div>
                     </div>
                     <!--begin::User details-->
                 </td>
-                <td><span class="mobile_input_mask">{{ $user->mobile_number }}</span></td>
+                <td><span>@if($user->userType) {{ $user->userType->name }} @else {{'Customer'}} @endif</span></td>
                 
-                <td>{{ date('m-d-Y', strtotime($user->created_at)); }}</td>
+                <td>{{ date('d-m-Y', strtotime($user->created_at)); }}</td>
                 <td>
                     <?php
                     $checked = ($user->status == 1) ? "checked" : "";

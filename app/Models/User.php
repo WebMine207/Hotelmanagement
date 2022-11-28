@@ -63,6 +63,14 @@ class User extends Authenticatable
         return $this->hasOne(Hotel::class,'user_id','id');
     }
 
+    /**
+     * get user type name
+     */
+    public function userType()
+    {
+        return $this->hasOne(Role::class,'id','role');
+    }
+
     public function phoneCode()
     {
         return $this->hasOne(phoneCode::class,'phone','phone_Code');

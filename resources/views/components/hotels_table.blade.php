@@ -1,8 +1,9 @@
 <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="kt_table_users">
     <thead>
         <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0" style="vertical-align: middle;">
-            <th>Full Name</th>
-            <th>Mobile Number</th>
+            <th width="25%">Name</th>
+            <th>Owner</th>
+            <th>Price</th>
             <th>Created At</th>
             <th>Status</th>
             <th width="15%">Action</th>
@@ -15,13 +16,14 @@
 
                 <td class="sorting_1">
                     <div class="d-flex flex-column">
-                        <div class="text-gray-800">   {{$hotel->title}}</div>
-                        <span>{{ $hotel->rooms }}</span>
+                        <div class="text-gray-800">   {{$hotel->name}}</div>
+                        <span>{{ $hotel->total_room }} {{'- Rooms'}} </span> 
+                        <span>{{ $hotel->guest }} {{'- Guest/room '}} </span>
                     </div>
                     </div>
                 </td>
-                <td>{{ $hotel->title }}</td>
-                
+                <td>@if($hotel->owner) {{ $hotel->owner->full_name }} @else {{' - '}} @endif </td>
+                <td>{{ $hotel->price }}</td>
                 <td>{{ date('d-m-Y', strtotime($hotel->created_at)); }}</td>
                 <td>
                     <?php
@@ -35,7 +37,7 @@
                 <td>
                     <a class="btn btn-sm btn-primary" href="{{route('hotels.edit',$hotel->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
 
-                    <button class="btn btn-sm btn-danger delete_row" data-title="hotel" data-href="{{route('hotels.destroy',$hotel->id)}}" data-user_id ="{{getEncrypted($hotel->id)}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
+                    <button class="btn btn-sm btn-danger delete_row" data-title="hotel" data-href="{{route('hotels.destroy',$hotel->id)}}" data-user_id ="{{$hotel->id}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
                 </td>
             </tr>
         @endforeach

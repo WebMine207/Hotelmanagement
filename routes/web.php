@@ -25,11 +25,22 @@ Route::middleware('auth')->group(function (){
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('home');
 
+    /**
+     * profile routes
+     */
     Route::get("profile",[ProfileController::class,'index'])->name('profile.index');
     Route::post("profile/update",[ProfileController::class,'update'])->name('profile.update');
-
     Route::get("change_password",[ProfileController::class,'password_index'])->name('password.index');
     
+    /**
+     * users routes
+     */
     Route::resource('users', UserController::class);
+    
+    /**
+     * hotels routes
+     */
+    Route::resource('hotels', HotelController::class);
+
 });
 Auth::routes();

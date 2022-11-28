@@ -14,9 +14,9 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['name'=>'admin','status'=>1],
-            ['name'=>'customer','status'=>1],
-            ['name'=>'hotel','status'=>1],
+            ['name'=>'Admin','status'=>1],
+            ['name'=>'Customer','status'=>1],
+            ['name'=>'Hotel','status'=>1],
         ];
 
         foreach ($data as $item) {

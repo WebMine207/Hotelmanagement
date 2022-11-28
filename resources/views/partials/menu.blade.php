@@ -80,7 +80,7 @@
              id="#kt_aside_menu" data-kt-menu="true">
              
              <div class="menu-item">
-                 <a class="menu-link {{ Route::currentRouteName() == route('home') ? 'active' : '' }}" href="{{ route('home') }}">
+                 <a class="menu-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}" href="{{ route('home') }}">
                      <span class="menu-icon">
                          <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                          <span class="fas fa-home"></span>
@@ -91,7 +91,6 @@
              </div>
 
              <div class="menu-item">
-                
                  <a class="menu-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}" href="{{ route('users.index') }}">
                      <span class="menu-icon">
                          <span class="fas fa-user"></span>
@@ -99,7 +98,16 @@
                      <span class="menu-title">Users</span>
                  </a>
              </div>
-                         
+                      
+             <div class="menu-item">
+                 <a class="menu-link {{ Route::currentRouteName() == 'hotels.index' ? 'active' : '' }}" href="{{ route('hotels.index') }}">
+                     <span class="menu-icon">
+                         <span class="fas fa-hotel"></span>
+                     </span>
+                     <span class="menu-title">Hotels</span>
+                 </a>
+             </div>
+
          </div>
          <!--end::Menu-->
      </div>
