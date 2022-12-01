@@ -44,11 +44,6 @@ toastr.options = {
 };
 /* END - Toaster JQuery*/
 
-   /* mobile number field input mask */
-    $(document).ready(function(){
-        $('.mobile_input_mask').inputmask('(999)-999-9999');
-    });
-
 $(document).on('keyup','#filter_form input',function(e){
     if($(this).val().length > 2 || $(this).val().length == 0){
         $('#filter_page').val(0);

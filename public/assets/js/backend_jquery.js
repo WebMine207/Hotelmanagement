@@ -83,16 +83,23 @@ $('#fromdate').on('change', function () {
         minDate: fromdate,
     });
 });
-/* Filter subscribe business */
-$('#subscription_status').on('change', function (){
-    var subscription_status  =0;
-    if($("#subscription_status").prop('checked') == true){
-        var subscription_status = 1;
-    }
-    // return;
-    $('#form-subscription_status').val(subscription_status);
+
+/**
+ *  owner wise hotel Filter 
+ */
+ $('#owner').on('change', function (){
+    var owner  =$('#owner').val();
+    $('#form-owner').val(owner);
     $('#filter_form').trigger('submit');
 });
+
+/* hotel type Filter */
+$('#hotel_type').on('change', function (){
+    var hotel_type  =$('#hotel_type').val();
+    $('#form-hotel_type').val(hotel_type);
+    $('#filter_form').trigger('submit');
+});
+
 
 /* Date filter */
 $('#todate').on('change', function () {
@@ -178,8 +185,7 @@ $(document).on('submit','#filter_form',function(e){
             if(result.isConfirmed){
                 $.ajax({
                     url:URL,
-                    type: 'delete', // replaced from put
-                    dataType: "JSON",
+                    type: 'delete', 
                     success: function (response)
                     {
                         location.reload();
@@ -202,15 +208,15 @@ $(document).on('change','.update_status',function(){
     var URL = $(this).attr('href');
     var title  = $(this).data('title');
     var $this = $(this);
+    var id    = $(this).data('id');
     if($(this).is(":checked")){
         var status = 1;
         var current_status = 'active';
     }
     else if($(this).is(":not(:checked)")){
-        var status = 0;
+        var status = 2;
         var current_status = 'inactive';
     }
-
     Swal.fire({
         text: "Are you sure to "+current_status+" this "+title+" ?",
         icon: "warning",
@@ -225,11 +231,11 @@ $(document).on('change','.update_status',function(){
                $.ajax({
                     url: URL,
                     type: 'post',
-                    data: {status: status},
+                    data: {status: status,id : id},
 
                     success: function(response){
                         if(response.status == 'success'){
-                            location.reload();
+                            toastr.success(response.message);
                         }else{
                             Swal.fire({ text: response.message, icon: "error", buttonsStyling: !1, confirmButtonText: "Okay", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function (result) { if(result.isConfirmed){ location.reload() } });;
                         }
@@ -239,8 +245,6 @@ $(document).on('change','.update_status',function(){
                     }
                 });
         }else{
-
-
             if($this.is(":checked")){
                 $this.prop('checked', false);
             }
@@ -254,29 +258,6 @@ $(document).on('change','.update_status',function(){
 });
 /* END status update */
 
-/*Begin approval status update Ajax*/
-$(document).on('submit','#approval_status_form',function(e){
-    e.preventDefault();
-    var form_url    = $(this).attr('action');
-    var form_data   = $(this).serialize();
-    $.ajax({
-        url: form_url,
-        type: 'POST',
-        data: form_data,
-        success: function(response){
-            if(response.status == 'success'){
-                location.reload();
-            }else{
-                Swal.fire({ text: 'Something went wrong', icon: "error", buttonsStyling: !1, confirmButtonText: "Okay", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function (result) { if(result.isConfirmed){ location.reload() } });;
-            }
-        },
-        error: function(error){
-             Swal.fire({ text: 'Something went wrong', icon: "error", buttonsStyling: !1, confirmButtonText: "Okay", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function (result) { if(result.isConfirmed){ location.reload() } });;
-        }
-    });
-});
-/* END approval status update Ajax*/
-
 /* Begin  date picker*/
 $(".datepicker").flatpickr();
 /* end date picker*/
@@ -287,7 +268,6 @@ $(function () {
     });
 });
 
-
 /* reset filter button start*/
     $('#reset_filter_btn').on('click', function () {
         $('#filter_form').trigger('reset');
@@ -295,37 +275,10 @@ $(function () {
         $('#fromdate').val(null).trigger('change');
         $('#todate').val(null).trigger('change');
         $('#status').val(null).trigger('change');
-        $('#bulk_update_status').val(null).trigger('change');
-        $('#approval_status').val(null).trigger('change');
-        $('#subscription_status').prop('checked',false);
-        $('#subscription_status').val(null).trigger('change');
+        $('#owner').val(null).trigger('change');
+        $('#hotel_type').val(null).trigger('change');
     });
 /* reset filter end*/
 
-$(document).on('click', '.change_status_class',function(event){
-    $('#reject_reason_div').hide();
-    $('#approval_status_form').attr('action',$(this).data('url'));
-    $('#reason_model').modal('show');
-    $('#approv_status').empty();
-    $('#reject_reason_div').hide();
-    $(this).val('');
-    $('#approve_status').change(function(){
-        if($('#approve_status').val() == "2") {
-            $('#reject_reason_div').show();
-        } else {
-            $('#reject_reason_div').hide();
-        }
-    });
-    $('#reason_model').on('hidden.bs.modal', function () {
-        $('#reject_reason_div').hide();
-    });
-    $('#close_reason_modal').on('click', function () {
-        $('#reason_model').modal('hide');
-    });
-});
 
-/* mobile number field input mask */
-$(document).ready(function(){
-   $('.mobile_input_mask').inputmask('(999)-999-9999');
-});
 

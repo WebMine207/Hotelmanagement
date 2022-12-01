@@ -16,9 +16,8 @@ class HotelSeeder extends Seeder
     {
         $data = [
             [
-            	'user_id' => "1",
+            	'user_id' => "3",
                 'listing_id' => "2",
-                'slug' => "dev-hotel",
                 'name' => "dev hotel",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas accusantium. Neque sapiente fugiat vitae! Iure nihil aut eveniet perspiciatis laudantium rerum!',
                 'total_room' => '5',
@@ -30,9 +29,8 @@ class HotelSeeder extends Seeder
                 'address' => " Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas"
             ],
 	        [
-            	'user_id' => "2",
+            	'user_id' => "3",
                 'listing_id' => "2",
-                'slug' => "aliquam",
                 'name' => "aliquam",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas accusantium. Neque sapiente fugiat vitae! Iure nihil aut eveniet perspiciatis laudantium rerum!',
                 'total_room' => '2',
@@ -44,9 +42,8 @@ class HotelSeeder extends Seeder
                 'address' => " Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas"
             ],
             [
-            	'user_id' => "2",
+            	'user_id' => "4",
                 'listing_id' => "5",
-                'slug' => "laudantium-rerum",
                 'name' => "laudantium rerum",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas accusantium. Neque sapiente fugiat vitae! Iure nihil aut eveniet perspiciatis laudantium rerum!',
                 'total_room' => '8',
@@ -58,9 +55,8 @@ class HotelSeeder extends Seeder
                 'address' => " Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas"
             ],
 	        [
-            	'user_id' => "1",
+            	'user_id' => "4",
                 'listing_id' => "2",
-                'slug' => "Neque-sapiente",
                 'name' => "Neque sapiente",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus odio dolores cupiditate eaque excepturi aliquam totam deleniti voluptas accusantium. Neque sapiente fugiat vitae! Iure nihil aut eveniet perspiciatis laudantium rerum!',
                 'total_room' => '6',

@@ -19,7 +19,7 @@ class HotelsRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,17 +31,63 @@ class HotelsRequest extends FormRequest
     {
         if ($this->isMethod('POST')){
             return [
-                'hotel_name' => 'required|min:3|max:100',
-                'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
-                'password' => 'required|min:3|max:16',
-                'status' => 'required|in:1,2'
+                'name'                  => 'required|min:3|max:100',
+                'email'                 => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+                'password'              => 'required|min:8|max:16',
+                'phone_code'            => 'required',
+                'mobile_number'         => 'required',
+                'hotel_type'            => 'required',
+                'description'           => 'required',
+                'total_room'            => 'required',
+                'guest'                 => 'required',
+                'bedrooms'              => 'required',
+                'bathrooms'              => 'required',
+                'beds'                  => 'required',
+                'address'               => 'required',
+                'zip_code'              => 'required',
+                'city'                  => 'required',
+                'state'                 => 'required',
+                'country'               => 'required',
+                'price'                 => 'required',
+                'discount_price'        => 'required',
+                'weekend_base_price'    => 'required',
+                'extra_person_fee'      => 'required',
+                'convenience_charge'    => 'required',
+                'security_deposit_fee'  => 'required',
+                'good_and_service_tax'  => 'required',
+                'cancelation_charge'    => 'required',
+                // 'status'                => 'required|in:1,2'
             ];
         }
         if ($this->isMethod('PUT')){
             $user_id = (int)$this->route("user");
             return [
-                'hotel_name' => 'required|min:3|max:100',
-                'status' => 'required|in:1,2'
+                'name'                  => 'required|min:3|max:100',
+                'email'                 => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+                'password'              => 'required|min:8|max:16',
+                'phone_code'            => 'required',
+                'mobile_number'         => 'required',
+                'hotel_type'            => 'required',
+                'description'           => 'required',
+                'total_room'            => 'required',
+                'guest'                 => 'required',
+                'bedrooms'              => 'required',
+                'bathrooms'              => 'required',
+                'beds'                  => 'required',
+                'address'               => 'required',
+                'zip_code'              => 'required',
+                'city'                  => 'required',
+                'state'                 => 'required',
+                'country'               => 'required',
+                'price'                 => 'required',
+                'discount_price'        => 'required',
+                'weekend_base_price'    => 'required',
+                'extra_person_fee'      => 'required',
+                'convenience_charge'    => 'required',
+                'security_deposit_fee'  => 'required',
+                'good_and_service_tax'  => 'required',
+                'cancelation_charge'    => 'required',
+                // 'status'                => 'required|in:1,2'
             ];
         }
     }

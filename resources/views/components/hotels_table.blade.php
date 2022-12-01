@@ -28,14 +28,13 @@
                 <td>
                     <?php
                     $checked = ($hotel->status == 1) ? "checked" : "";
-                    $ids= $hotel->id;
                     ?>
                     <div class="form-check form-switch  form-check-custom form-check-solid">
-                        <input class="form-check-input update_status" data-title="hotel" name="status" type="checkbox" href="#" {{$checked}} />
+                        <input class="form-check-input update_status" data-title="hotel" data-id="{{ $hotel->id }}" name="status" type="checkbox" href="{{ route('hotels.update_status')}}" {{$checked}} />
                     </div>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="{{route('hotels.edit',$hotel->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
+                    <!-- <a class="btn btn-sm btn-primary" href="{{route('hotels.edit',$hotel->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a> -->
 
                     <button class="btn btn-sm btn-danger delete_row" data-title="hotel" data-href="{{route('hotels.destroy',$hotel->id)}}" data-user_id ="{{$hotel->id}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
                 </td>

@@ -6,7 +6,7 @@
 
          <!--end::Symbol-->
          <!--begin::Wrapper-->
-         <div class="aside-user-info flex-row-fluid flex-wrap ms-5">
+         <div class="aside-user-info flex-row-fluid flex-wrap ms-5 mt-4">
              <!--begin::Section-->
              <div class="d-flex">
                  <!--begin::Info-->

@@ -18,12 +18,9 @@ class CreateHotelsTable extends Migration
             $table->bigInteger('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('listing_id')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->string('feature_image')->nullable()->default(null);
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->integer('phone_code')->nullable();
-            $table->bigInteger('mobile_number')->nullable();
             $table->string('description', 2000)->nullable();
             $table->tinyInteger('hotel_type')->default('3')->comment("1=Motel,2=Resort,3=Boutique");
             $table->integer('total_room')->nullable();

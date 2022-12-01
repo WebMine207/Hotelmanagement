@@ -2,7 +2,7 @@
     <thead>
         <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0" style="vertical-align: middle;">
             <th>Full Name</th>
-            <th>Mobile Number</th>
+            <th>User Type</th>
             <th>Created At</th>
             <th>Status</th>
             <th width="15%">Action</th>
@@ -30,14 +30,13 @@
                 <td>
                     <?php
                     $checked = ($user->status == 1) ? "checked" : "";
-                    $ids=$user->id;
                     ?>
                     <div class="form-check form-switch  form-check-custom form-check-solid">
-                        <input class="form-check-input update_status" data-title="user" name="status" type="checkbox" href="#" {{$checked}} />
+                        <input class="form-check-input update_status" data-title="user" name="status" type="checkbox" href="{{ route('users.update_status')}}"  data-id="{{ $user->id }}" {{$checked}} />
                     </div>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="{{route('users.edit',$user->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
+                    <!-- <a class="btn btn-sm btn-primary" href="{{route('users.edit',$user->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a> -->
 
                     <button class="btn btn-sm btn-danger delete_row" data-title="user" data-href="{{route('users.destroy',$user->id)}}" data-user_id ="{{$user->id}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
                 </td>

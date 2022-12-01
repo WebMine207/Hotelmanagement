@@ -11,7 +11,7 @@
              <!--begin::Total users-->
              <div class="col-xl-3">
                 <!--begin::Statistics Widget 5-->
-                <a href="98"  class="card bg-info hoverable card-xl-stretch mb-5 mb-xl-8">
+                <a href="{{ route('users.index') }}"  class="card bg-info hoverable card-xl-stretch mb-5 mb-xl-8">
                     <!--begin::Body-->
                     <div class="card-body">
                        <!--begin::Svg Icon | path: icons/duotune/general/gen049.svg-->
@@ -38,7 +38,7 @@
             <!--begin::Total Hotels-->
             <div class="col-xl-3">
                 <!--begin::Statistics Widget 5-->
-                <a href="#" class="card bg-primary hoverable card-xl-stretch mb-5 mb-xl-8">
+                <a href="{{ route('hotels.index') }}" class="card bg-primary hoverable card-xl-stretch mb-5 mb-xl-8">
                     <!--begin::Body-->
                     <div class="card-body">
                        <!--begin::Svg Icon | path: icons/duotune/graphs/gra005.svg-->

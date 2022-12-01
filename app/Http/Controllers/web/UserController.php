@@ -201,16 +201,18 @@ class UserController extends Controller
         try {
             $user=User::where('id',$id)->delete();
             if($user){
-                return redirect()->route('users.index')->withSuccess("User deleted successfully.");
+                \Session::flash('toast-success', 'User deleted successfully');
+                return response()->json(['status'=>"success",'message'=>"User deleted successfully."]);
             }
             else{
-                return redirect()->route('users.index')->withError("User not removed Please try again.");
+                return response()->json(['status'=>"fail",'message'=>"User not removed Please try again"]);
             }
         }
         catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
+            dd($exception);
+            return redirect()->route('users.index')->withError("Something went wrong");
         }
-    }
+    }    
 
     public function update_status(Request $request)
     {
@@ -218,14 +220,14 @@ class UserController extends Controller
             $request_data=$request->all();
             $user=User::where('id',(int)$request_data['id'])->update(['status'=>(int)$request_data['status']]);
             if($user){
-                return response()->json(['status'=>true,'message'=>"User status updated successfully."]);
+                return response()->json(['status'=>'success','message'=>"User status updated successfully."]);
             }
             else{
-                return response()->json(['status'=>true,'message'=>"User status not updated Please try again."]);
+                return response()->json(['status'=>'success','message'=>"User status not updated Please try again."]);
             }
         }
         catch (\Exception $exception){
-            return response()->json(['status'=>false,'message'=>"Something wrong"]);
+            return response()->json(['status'=>'fail','message'=>"Something wrong"]);
         }
     }
 }

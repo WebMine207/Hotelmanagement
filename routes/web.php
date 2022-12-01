@@ -36,11 +36,13 @@ Route::middleware('auth')->group(function (){
      * users routes
      */
     Route::resource('users', UserController::class);
+    Route::Post('user-status',[UserController::class,'update_status'])->name('users.update_status');
     
     /**
      * hotels routes
      */
     Route::resource('hotels', HotelController::class);
+    Route::Post('hotel-status',[HotelController::class,'update_status'])->name('hotels.update_status');
 
 });
 Auth::routes();
