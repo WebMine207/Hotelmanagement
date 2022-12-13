@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('tab_title','Add Hotel')
+@section('tab_title','Edit Hotel')
 @section('title')
     <li class="breadcrumb-item text-muted"><a href="{{ route('hotels.index') }}">{{'Hotels list'}}</a> &nbsp;{{' - '}}</li>
-    <li class="breadcrumb-item text-dark"> {{'Add'}}</li>
+    <li class="breadcrumb-item text-dark"> {{'Edit'}}</li>
 @endsection
 @section('content')
 <div class="d-flex flex-column-fluid">
@@ -18,8 +18,9 @@
                         <div class="card">
                             <!--begin::Card body-->
                             <div class="card-body">
-                                <form class="form" action="{{ route('hotels.store') }}" id="edit_hotel_form" method="post">
+                                <form class="form" action="{{ route('hotels.update', $hotel->id) }}" id="editHotelForm" method="post" enctype='multipart/form-data'>
                                     @csrf
+                                    @method('PATCH')
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h3 class="py-5">Basic Details :</h3>
@@ -27,24 +28,49 @@
                                                 <div class="fv-row mb-7 form-group">
                                                     <label class="required fs-6 fw-bold mb-2">Hotel Name</label>
                                                     <input type="text" class="form-control form-control-solid py-6"
-                                                        value="" name="name" placeholder="{{'Name'}}"/>
+                                                        value="{{ $hotel->name }}" name="name" placeholder="{{'Name'}}" data-parsley-required ="true" data-parsley-errors-container = "#name-errors"  data-parsley-required-message = 'Please enter hotel name' />
                                                     @if ($errors->has('name'))
                                                         <span class="text-danger">{{ $errors->first('name') }}</span>
                                                     @endif
                                                 </div>
                                                 <!-- end-Name -->
 
+                                                <!--first  Name -->
+                                                <div class="fv-row mb-7 form-group">
+                                                    <label class="required fs-6 fw-bold mb-2">Owner first name</label>
+                                                    <input type="text" class="form-control form-control-solid py-6"
+                                                        value="{{ $user->first_name }}" name="first_name" placeholder="{{'first name'}}" data-parsley-required ="true" data-parsley-errors-container = "#first_name-errors"  data-parsley-required-message = 'Please enter owner first name' />
+                                                    <span class="text-danger" id="first-name-errors"></span>
+                                                    @if ($errors->has('first_name'))
+                                                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
+                                                    @endif
+                                                </div>
+                                                <!-- end-first Name -->
+
+                                                <!-- last Name -->
+                                                <div class="fv-row mb-7 form-group">
+                                                    <label class="required fs-6 fw-bold mb-2">Owner last name</label>
+                                                    <input type="text" class="form-control form-control-solid py-6"
+                                                        value="{{ $user->last_name }}" name="last_name" placeholder="{{'last name'}}" data-parsley-required ="true" data-parsley-errors-container = "#last-name-errors"  data-parsley-required-message = 'Please enter owner last name' />
+                                                        <span class="text-danger" id="last-name-errors"></span>
+                                                    @if ($errors->has('last_name'))
+                                                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
+                                                    @endif
+                                                </div>
+                                                <!-- end-last Name -->
+
                                                 <!-- email -->
                                                 <div class="fv-row mb-7 form-group">
                                                     <label class="required fs-6 fw-bold mb-2">Hotel Email</label>
                                                     <input type="email" class="form-control form-control-solid py-6"
-                                                        value="" name="email" placeholder="{{'Email'}}" />
+                                                        value="{{ $user->email }}" name="email" placeholder="{{'Email'}}" data-parsley-required = "true"  data-parsley-errors-container = "#email-errors" data-parsley-type = "email" data-parsley-required-message = 'Please enter hotel email' data-parsley-type-message ='Enter Owner first name' />
+                                                        <span class="text-danger" id="email-errors"></span>
                                                     @if ($errors->has('email'))
                                                         <span class="text-danger">{{ $errors->first('email') }}</span>
                                                     @endif
                                                 </div>
                                                 <!-- end-email -->
-
+                                               
                                                 <!-- Mobile -->
                                                 <div class="fv-row mb-7 form-group">
                                                     <label class="required fs-6 fw-bold mb-2">Hotel Mobile Number</label>
@@ -57,9 +83,10 @@
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-10">
-                                                                <input type="text" id="mobile_number" class="form-control form-control-solid py-6" value="" placeholder="{{'Mobile Number'}}" name="mobile_number" />
-                                                            </div>
+                                                                <input type="text" name="mobile_number" id="mobile_number" class="form-control form-control-solid py-6" value="{{ $user->mobile_number }}" placeholder="{{'Mobile Number'}}" minlength= "10" maxlength= "10"  data-parsley-required = "true" data-parsley-errors-container = "#mobile-number-errors"  data-parsley-required-message = 'Please enter mobile number'  data-parsley-minlength-message = 'Enter valid mobile number' data-parsley-length-message = 'Enter valid mobile number' />
+                                                                </div>
                                                         </div>
+                                                        <span class="text-danger" id="mobile-number-errors"></span>
                                                         @if ($errors->has('mobile_number'))
                                                             <span class="text-danger">{{ $errors->first('mobile_number') }}</span>
                                                         @endif
@@ -88,7 +115,8 @@
                                                     <label class="fs-6 fw-bold mb-2">
                                                         <span class="required">Description</span>
                                                     </label>
-                                                    <textarea class="form-control description-hight form-control-solid" rows="3" placeholder="Description" name="description" id="description"> </textarea>
+                                                    <textarea class="form-control description-hight form-control-solid" rows="3" placeholder="Description" name="description" id="description" data-parsley-required = "true" data-parsley-required-message="{{ __('Enter description') }}" data-parsley-errors-container="#description-errors">{{ $hotel->description }} </textarea>
+                                                    <span class="text-danger" id="description-errors"></span>
                                                 </div>
                                                 <!--end-description -->
 
@@ -97,8 +125,7 @@
                                                     <div class="col-md-6">
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Total Rooms</label>
-                                                            <input type="number" class="form-control form-control-solid py-6"
-                                                                name="total_room" placeholder="{{'room'}}"/>
+                                                            <input type="number" class="form-control form-control-solid py-6" value="{{ $hotel->total_room }}"  name="total_room"  placeholder="{{'room'}}" data-parsley-required = "true" data-parsley-errors-container = "#total-room-errors"  data-parsley-maxlength-message = 'Enter valid value' data-parsley-required-message = 'Please enter total room' placeholder = 'Total room'/>
                                                             @if ($errors->has('total_room'))
                                                                 <span class="text-danger">{{ $errors->first('total_room') }}</span>
                                                             @endif
@@ -108,7 +135,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Guests per room</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="guest" placeholder="{{'Guests'}}"/>
+                                                                name="guest" value="{{ $hotel->guest }}" placeholder="{{'Guests'}}" data-parsley-required = "true" data-parsley-errors-container = "#guest-errors"  data-parsley-maxlength-message = 'Enter valid value' data-parsley-required-message = 'Please enter guest' />
                                                             @if ($errors->has('guest'))
                                                                 <span class="text-danger">{{ $errors->first('guest') }}</span>
                                                             @endif
@@ -121,7 +148,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Bedrooms</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="bedrooms" placeholder="{{'Bedrooms'}}"/>
+                                                                name="bedrooms" value="{{ $hotel->bedrooms }}" placeholder="{{'Bedrooms'}}" data-parsley-required = "true" data-parsley-errors-container = "#bedrooms-errors" data-parsley-maxlength-message = 'Enter valid value' data-parsley-required-message = 'Please enter bedrooms' />
                                                             @if ($errors->has('bedrooms'))
                                                                 <span class="text-danger">{{ $errors->first('bedrooms') }}</span>
                                                             @endif
@@ -131,7 +158,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Bathrooms</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="bathroom" placeholder="{{'Bathroom'}}"/>
+                                                                name="bathrooms" value="{{ $hotel->bathrooms }}" placeholder="{{'Bathroom'}}" data-parsley-required = "true" data-parsley-errors-container = "#bathroom-errors" data-parsley-maxlength-message = 'Enter valid value' data-parsley-required-message = 'Please enter bathroom'/>
                                                             @if ($errors->has('bathroom'))
                                                                 <span class="text-danger">{{ $errors->first('bathroom') }}</span>
                                                             @endif
@@ -141,7 +168,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Beds</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="beds" placeholder="{{'Beds'}}"/>
+                                                                name="beds" value="{{ $hotel->beds }}" placeholder="{{'Beds'}}" data-parsley-required = "true" data-parsley-errors-container = "#beds-errors" data-parsley-required-message = 'Please enter beds' />
                                                             @if ($errors->has('beds'))
                                                                 <span class="text-danger">{{ $errors->first('beds') }}</span>
                                                             @endif
@@ -150,16 +177,17 @@
                                                 </div>
                                                 <!-- end-Rooms -->
 
-                                            <!-- Status dropdown -->
-                                                <!-- <div class="fv-row mb-7">
-                                                    <label class="fs-6 fw-bold mb-2">
-                                                        <span class="required ">Approval Status</span>
-                                                    </label>
-                                                    <div class="px-3 mx-3 text-bold">
-                                                        {{ 'Pending' }}
-                                                    </div>
-                                                </div> -->
-                                            <!-- end-Status dropdown -->
+                                            <!-- recommendation -->
+                                            <div class="fv-row mb-7">
+                                                <label class="fs-6 fw-bold mb-2">
+                                                    <span>Recommendation</span>
+                                                </label>
+                                                <div class="text-bold">
+                                                    <input type="checkbox" name="recommendation" id="recommendation" value="1">Recommended By platform
+                                                </div>
+                                            </div>
+                                            <!-- end- recomanded Image -->
+
                                             <hr class='text-muted'>
                                             <h3 class="py-5">Image Section</h3>
                                              <!-- Feature Image -->
@@ -168,8 +196,9 @@
                                                     <span class="required ">Feature Image</span>
                                                 </label>
                                                 <div class="px-3 mx-3 text-bold">
-                                                    <input type="file" name="feature_image" id="feature_image" multiple accept="image/png, image/gif, image/jpeg" require>
+                                                    <input type="file" class="form-control mb-4" name="feature_image" id="feature_image" accept="image/png, image/gif, image/jpeg" require>
                                                 </div>
+                                                <!-- <div class="row row-cols-sm-3 row-cols-2 g-sm-10 g-6 my-2" id="images-preview"></div> -->
                                             </div>
                                             <!-- end- Feature Image -->
 
@@ -179,7 +208,7 @@
                                                     <span class="required ">Images</span>
                                                 </label>
                                                 <div class="px-3 mx-3 text-bold">
-                                                    <input type="file" name="images[]" multiple accept="image/png, image/gif, image/jpeg" id="images">
+                                                    <input type="file" class="form-control mb-4" name="images[]" multiple accept="image/png, image/gif, image/jpeg" id="images">
                                                 </div>
                                             </div>
                                             <!-- end- Hotel Images -->
@@ -190,17 +219,32 @@
                                             <!-- Address -->
                                             <div class="fv-row mb-7 form-group">
                                                 <label class="required fs-6 fw-bold mb-2">Address</label>
-                                                    <input type="text" class="form-control form-control-solid address py-6" id="edit_hotel_location" name="address" placeholder="Address Line 1" />
-                                                    <input type="hidden" name="latitude" id="edit_latitude" value="">
-                                                    <input type="hidden" name="longitude" id="edit_longitude" value="">
+                                                    <input type="text" class="form-control form-control-solid address py-6" id="edit_hotel_location"  value="{{ $hotel->address }}" name="address" placeholder="Address Line 1" />
+                                                    
+                                                    <!-- <input type="hidden" name="latitude" id="edit_latitude" value=""> -->
+
+                                                    <!-- <input type="hidden" name="longitude" id="edit_longitude" value=""> -->
                                             </div>
                                             <!-- end-Address -->
+                                            <!-- latitude -->
+                                            <div class="fv-row mb-7 form-group">
+                                                <label class="required fs-6 fw-bold mb-2">Latitude</label>
+                                                    <input type="text" class="form-control form-control-solid latitude py-6" id="latitude" name="lat" value="{{ $hotel->lat }}" placeholder="latitude" />
+                                            </div> 
+                                            <!-- latitude -->
 
+                                            <!-- longitude -->
+                                            <div class="fv-row mb-7 form-group">
+                                                <label class="required fs-6 fw-bold mb-2">Longitude</label>
+                                                    <input type="text" class="form-control form-control-solid longitude py-6" id="longitude" name="lng"  value="{{ $hotel->lng }}" placeholder="longitude" />
+                                            </div> 
+                                            <!-- longitude -->
+                                            
                                             <!-- zip code -->
                                             <div class="fv-row mb-7 form-group">
                                                 <label class="required fs-6 fw-bold mb-2 address">Zip Code</label>
                                                 <input type="text" class="form-control form-control-solid py-6"
-                                                    value="" id="zip_code" name="zip_code" placeholder="Zip Code" />
+                                                    value="{{ $hotel->zip_code }}" id="zip_code" name="zip_code" placeholder="Zip Code" />
                                             </div>
                                             <!-- end-zip code -->
 
@@ -208,7 +252,7 @@
                                              <div class="fv-row mb-7 form-group">
                                                 <label class="required fs-6 fw-bold mb-2 address">City</label>
                                                 <input type="text" class="form-control form-control-solid py-6"
-                                                    value="" name="city" placeholder="City"/>
+                                                    value="{{ $hotel->city }}" name="city" placeholder="City"/>
                                             </div>
                                             <!-- end-city -->
 
@@ -216,7 +260,7 @@
                                             <div class="fv-row mb-7 form-group">
                                                 <label class="required fs-6 fw-bold mb-2 address">State</label>
                                                 <input type="text" class="form-control form-control-solid py-6"
-                                                    value="" name="state" placeholder="State"/>
+                                                    value="{{ $hotel->state }}" name="state" placeholder="State"/>
                                             </div>
                                             <!-- end-state -->
 
@@ -242,7 +286,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Basic Price</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="price" placeholder="{{'Price'}}"/>
+                                                                name="price" value="{{ $hotel->price }}" placeholder="{{'Price'}}"/>
                                                             @if ($errors->has('price'))
                                                                 <span class="text-danger">{{ $errors->first('price') }}</span>
                                                             @endif
@@ -252,7 +296,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Discount Price</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="discount_price" placeholder="{{'discount_price'}}"/>
+                                                                name="discount_price" value="{{ $hotel->discount_price }}" placeholder="{{'discount_price'}}"/>
                                                             @if ($errors->has('discount_price'))
                                                                 <span class="text-danger">{{ $errors->first('discount_price') }}</span>
                                                             @endif
@@ -265,7 +309,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Weekend Base Price</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="weekend_base_price" placeholder="{{'Weekend Base Price'}}"/>
+                                                                name="weekend_base_price" value="{{ $hotel->weekend_base_price }}" placeholder="{{'Weekend Base Price'}}"/>
                                                             @if ($errors->has('weekend_base_price'))
                                                                 <span class="text-danger">{{ $errors->first('weekend_base_price') }}</span>
                                                             @endif
@@ -275,7 +319,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Extra Person Fee</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="extra_person_fee" placeholder="{{'Extra Person Fee'}}"/>
+                                                                name="extra_person_fee" value="{{ $hotel->extra_person_fee }}" placeholder="{{'Extra Person Fee'}}"/>
                                                             @if ($errors->has('extra_person_fee'))
                                                                 <span class="text-danger">{{ $errors->first('extra_person_fee') }}</span>
                                                             @endif
@@ -287,7 +331,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Convenience_charge </label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="convenience_charge" placeholder="{{'Convenience Charge'}}"/>
+                                                                name="convenience_charge" value="{{ $hotel->convenience_charge }}" placeholder="{{'Convenience Charge'}}"/>
                                                             @if ($errors->has('convenience_charge'))
                                                                 <span class="text-danger">{{ $errors->first('convenience_charge') }}</span>
                                                             @endif
@@ -297,7 +341,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Security Deposit Fee</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="security_deposit_fee" placeholder="{{'Security Deposit Fee'}}"/>
+                                                                name="security_deposit_fee" value="{{ $hotel->security_deposit_fee }}" placeholder="{{'Security Deposit Fee'}}"/>
                                                             @if ($errors->has('security_deposit_fee'))
                                                                 <span class="text-danger">{{ $errors->first('security_deposit_fee') }}</span>
                                                             @endif
@@ -309,7 +353,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Goods & Service Tax</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="good_and_service_tax" placeholder="{{'Goods & Service Tax'}}"/>
+                                                                name="good_and_service_tax" value="{{ $hotel->good_and_service_tax }}" placeholder="{{'Goods & Service Tax'}}"/>
                                                                 @if ($errors->has('good_and_service_tax'))
                                                                     <span class="text-danger">{{ $errors->first('good_and_service_tax') }}</span>
                                                                 @endif
@@ -319,7 +363,7 @@
                                                         <div class="fv-row mb-7 form-group">
                                                             <label class="required fs-6 fw-bold mb-2">Cancelation Charge</label>
                                                             <input type="number" class="form-control form-control-solid py-6"
-                                                                name="cancelation_charge" placeholder="{{'Cancelation Charge'}}"/>
+                                                                name="cancelation_charge" placeholder="{{'Cancelation Charge'}}" value="{{ $hotel->cancelation_charge }}"/>
                                                             @if ($errors->has('cancelation_charge'))
                                                                 <span class="text-danger">{{ $errors->first('cancelation_charge') }}</span>
                                                             @endif
@@ -336,7 +380,7 @@
                                                     <label class="fs-6 fw-bold mb-2">
                                                         <span class="required">Refunds</span>
                                                     </label>
-                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Refunds Policy" name="refunds" id="refunds"> </textarea>
+                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Refunds Policy" name="refunds" id="refunds">{{ $hotel->refunds }}</textarea>
                                                 </div>
                                                 <!--end-refunds -->
                                                 <!-- cancellation -->
@@ -344,7 +388,7 @@
                                                     <label class="fs-6 fw-bold mb-2">
                                                         <span class="required">Cancellation</span>
                                                     </label>
-                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Cancellation Policy" name="cancellation" id="cancellation"> </textarea>
+                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Cancellation Policy" name="cancellation" id="cancellation">{{ $hotel->cancellation }} </textarea>
                                                 </div>
                                                 <!--end-cancellation -->
                                                 <!-- common_note -->
@@ -352,7 +396,7 @@
                                                     <label class="fs-6 fw-bold mb-2">
                                                         <span class="required">Common Note</span>
                                                     </label>
-                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Common Note" name="common_note" id="common_note"> </textarea>
+                                                    <textarea class="form-control form-control-solid" rows="2" placeholder="Common Note" name="common_note" id="common_note">{{ $hotel->common_note }} </textarea>
                                                 </div>
                                                 <!--end-common_note -->
 
@@ -363,11 +407,11 @@
                                             <div class="fv-row mt-5">
                                                 
                                             </div>
-                                            <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
+                                            <!-- <input type="hidden" value="{{ Auth::user()->id }}" name="user_id"> -->
                                             <div class="fv-row mt-5 d-flex justify-content-end">
                                                 <!--begin::Button-->
                                                 <a href="{{ route('hotels.index') }}" class="btn btn-light me-3">Cancel</a>
-                                                <button type="submit" id="add_hotel_form_submit" data-kt-banner-action="submit"
+                                                <button type="submit" id="edit_hotel_form_submit" data-kt-banner-action="submit"
                                                     class="btn btn-primary">
                                                     <span class="indicator-label">Submit</span>
                                                     <span class="indicator-progress">Please wait...

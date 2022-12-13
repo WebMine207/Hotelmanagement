@@ -79,6 +79,7 @@
          <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
              id="#kt_aside_menu" data-kt-menu="true">
              
+             @if(Auth::user()->role == 1)
              <div class="menu-item">
                  <a class="menu-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}" href="{{ route('home') }}">
                      <span class="menu-icon">
@@ -91,7 +92,7 @@
              </div>
 
              <div class="menu-item">
-                 <a class="menu-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}" href="{{ route('users.index') }}">
+                 <a class="menu-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }} {{ Route::currentRouteName() == 'users.edit' ? 'active' : '' }}" href="{{ route('users.index') }}">
                      <span class="menu-icon">
                          <span class="fas fa-user"></span>
                      </span>
@@ -100,14 +101,23 @@
              </div>
                       
              <div class="menu-item">
-                 <a class="menu-link {{ Route::currentRouteName() == 'hotels.index' ? 'active' : '' }}" href="{{ route('hotels.index') }}">
+                 <a class="menu-link {{ Route::currentRouteName() == 'hotels.index' ? 'active' : '' }}  {{ Route::currentRouteName() == 'hotels.add' ? 'active' : '' }} {{ Route::currentRouteName() == 'hotels.edit' ? 'active' : '' }}" href="{{ route('hotels.index') }}">
                      <span class="menu-icon">
                          <span class="fas fa-hotel"></span>
                      </span>
                      <span class="menu-title">Hotels</span>
                  </a>
              </div>
-
+            @elseif(Auth::user()->role == 3)
+            <div class="menu-item">
+                 <a class="menu-link {{ Route::currentRouteName() == 'hotels.index' ? 'active' : '' }}  {{ Route::currentRouteName() == 'hotels.add' ? 'active' : '' }} {{ Route::currentRouteName() == 'hotels.edit' ? 'active' : '' }}" href="{{ route('hotels.index') }}">
+                     <span class="menu-icon">
+                         <span class="fas fa-hotel"></span>
+                     </span>
+                     <span class="menu-title">my Hotel</span>
+                 </a>
+             </div>
+            @endif
          </div>
          <!--end::Menu-->
      </div>

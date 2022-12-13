@@ -15,15 +15,15 @@
                                 <h3 class="card-title align-items-start flex-column mb-5">
                                     <span class="fw-bolder text-dark">Edit User</span>
                                 </h3>
-                                <form class="form" action="{{route('users.update',$user->id)}}" id="edit_users_form" method="post" enctype="multipart/form-data">
+                                <form class="form" action="{{route('users.update',$user->id)}}" id="edit_users_form" method="PUT" enctype="multipart/form-data">
                                     @csrf
-                                    @method('post')
+                                    @method('PUT')
                                     <div class="row">
                                          <!--first Name -->
                                         <div class="fv-row mb-4 col-lg-6">
                                             <label class="required fs-6 fw-bold mb-2">First Name</label>
                                             <input type="text" class="form-control form-control-solid" id="first_name" placeholder="" value="{{$user->first_name}}" name="first_name"/>
-                                            @if ($errors->has('name'))
+                                            @if ($errors->has('first_name'))
                                             <div class="error">
                                                 <strong>{{ $errors->first('first_name') }}</strong></div>
                                             @endif

@@ -95,25 +95,7 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        try {
-            $status = [1,2];
-            $input_data = $request->validated();
-            $user = new User();
-            $user->name=trim($input_data['username']);
-            $user->email=trim($input_data['email']);
-            $user->password=bcrypt($input_data['password']);
-            $user->role=3;
-            $user->status=in_array($input_data['status'],$status) ? $input_data['status'] : 1;
-            if($user->save()){
-                return redirect()->route('users.index')->withSuccess("Users added successfully.");
-            }
-            else{
-                return redirect()->route('users.index')->withError("something went wrong.");
-            }
-        }
-        catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
-        }
+       abort('404');
     }
 
     /**
@@ -124,6 +106,7 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
+        abort('404');
         try {
             $user=User::where('id',$id)->first();
             if(is_null($user)){
@@ -156,7 +139,6 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('toast-error','User not found');
         }
         catch (\Exception $exception){
-            dd($exception);
             return redirect()->route('users.index')->with('toast-error',"Something went wrong");
         }
     }
@@ -168,25 +150,22 @@ class UserController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(UserRequest $request)
+    public function update(Request $request,$id)
     {
+        dd($request->all());
         $userId = Auth::user()->id;
         try {
-            $status = [1,2];
-            $input_data = $request->validated();
-            $user = User::where('role',3)->where('id',$id)->first();
-            $user->name=trim($input_data['username']);
-            $user->email=trim($input_data['email']);
-            $user->status=in_array($input_data['status'],$status) ? $input_data['status'] : 1;
-            if($user->save()){
-                return redirect()->route('users.index')->withSuccess("Users updated successfully.");
+            $userdata = $request->all();
+            $user = User::where('role',3)->where('id',$id)->update($userdata);
+            if($user){
+                return redirect()->route('users.index')->with('toast-success',"Users updated successfully");
             }
             else{
-                return redirect()->route('users.index')->withError("Users not updated.Please try again.");
+                return redirect()->route('users.index')->with('toast-error',"Users not updated.Please try again");
             }
         }
         catch (\Exception $exception){
-            return redirect()->route('users.index')->withError("Something wrong");
+            return redirect()->route('users.index')->with('toast-error',"Something went wrong");
         }
     }
 
@@ -209,8 +188,7 @@ class UserController extends Controller
             }
         }
         catch (\Exception $exception){
-            dd($exception);
-            return redirect()->route('users.index')->withError("Something went wrong");
+            return redirect()->route('users.index')->with('toast-error',"Something went wrong");
         }
     }    
 

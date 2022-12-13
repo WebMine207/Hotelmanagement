@@ -56,17 +56,14 @@ class HotelsRequest extends FormRequest
                 'security_deposit_fee'  => 'required',
                 'good_and_service_tax'  => 'required',
                 'cancelation_charge'    => 'required',
-                // 'status'                => 'required|in:1,2'
             ];
         }
-        if ($this->isMethod('PUT')){
+        if ($this->isMethod('patch')){
             $user_id = (int)$this->route("user");
             return [
                 'name'                  => 'required|min:3|max:100',
-                'email'                 => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
-                'password'              => 'required|min:8|max:16',
+                'email'                 => 'required|email',
                 'phone_code'            => 'required',
-                'mobile_number'         => 'required',
                 'hotel_type'            => 'required',
                 'description'           => 'required',
                 'total_room'            => 'required',
@@ -87,7 +84,6 @@ class HotelsRequest extends FormRequest
                 'security_deposit_fee'  => 'required',
                 'good_and_service_tax'  => 'required',
                 'cancelation_charge'    => 'required',
-                // 'status'                => 'required|in:1,2'
             ];
         }
     }

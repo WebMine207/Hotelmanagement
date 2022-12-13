@@ -18,7 +18,7 @@ class Hotel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name','user_id','hotel_type','total_room','guest','bedrooms','bathrooms','beds','description','status','thumbnail_image','address','price','zip_code','city','state','country','lat','lng','currency','discount_price','security_deposit_fee','convenience_charge','extra_person_fee','weekend_base_price','good_and_service_tax','cancelation_charge','refunds','cancellation','common_note','status'
+        'name','user_id','hotel_type','total_room','guest','bedrooms','bathrooms','beds','description','status','thumbnail_image','address','price','zip_code','city','state','country','lat','lng','currency','discount_price','security_deposit_fee','convenience_charge','extra_person_fee','weekend_base_price','good_and_service_tax','cancelation_charge','refunds','cancellation','common_note','status','feature_image'
     ];
 
     /**
@@ -62,5 +62,25 @@ class Hotel extends Model
     public function owner()
     {
         return $this->hasOne(User::class,'id','user_id'); 
+    }
+
+    public function bookmark()
+    {
+        return $this->hasOne(HotelBookmark::class, 'hotel_id', 'id');
+    }
+
+    public function getFeatureImageAttribute($val=null)
+    {
+        if(is_null($val)){
+            return asset('assets/defaulthotel.png');
+        }
+        else{
+            if(file_exists( public_path().'uploads/feature_image/'.$val )){
+                return asset('uploads/feature_image').'/'.$val;
+            }
+            else{
+                return asset('assets/defaulthotel.png');
+            }
+        }
     }
 }

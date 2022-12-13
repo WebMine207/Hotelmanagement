@@ -45,8 +45,11 @@
                     <div class="d-flex flex-stack mb-2">
                         <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
                     </div>
-                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" id="password" autocomplete="off" placeholder="Password"  data-parsley-required="true"
-                    data-parsley-required-message="{{ 'Please enter password' }}" data-parsley-errors-container="#password-errors" minlength="8"  data-parsley-special="1" data-parsley-minlength-message="{{'Password must have at least 8 characters' }}"  data-parsley-special-message="{{ 'The password should contain Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Special Character, 1 Numeric Value.'}}"/>
+                    <div style="position: relative;width:100%">
+                        <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" id="password" autocomplete="off" placeholder="Password"  data-parsley-required="true"
+                        data-parsley-required-message="{{ 'Please enter password' }}" data-parsley-errors-container="#password-errors" minlength="8"  data-parsley-special="1" data-parsley-minlength-message="{{'Password must have at least 8 characters' }}"  data-parsley-special-message="{{ 'The password should contain Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Special Character, 1 Numeric Value.'}}"/>
+                        <i class="fa fa-eye" style="position:absolute;right:2%;top:50%;transform:translate(-50%,-50%);cursor: pointer;" onclick="myFunction('password')"></i>
+                    </div>
                     <span class="text-danger" id="password-errors"></span>
                     @error('password')
                     <div class=" invalid-feedback"><div >{{$message}}</div></div>
@@ -56,7 +59,10 @@
                     <div class="d-flex flex-stack mb-2">
                         <label class="form-label fw-bolder text-dark fs-6 mb-0">Confirm Password</label>
                     </div>
-                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" autocomplete="off" placeholder="Confirm password" data-parsley-required="true" data-parsley-errors-container="#password-confirmation-errors" data-parsley-required-message="{{'Please enter confirm password'}}" data-parsley-equalto-message="{{'The passwords you entered do not match'}}" data-parsley-equalto="#password" />
+                    <div style="position: relative;width:100%">
+                        <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password_confirmation') is-invalid @enderror" type="password" id="confirmpassword" name="password_confirmation" autocomplete="off" placeholder="Confirm password" data-parsley-required="true" data-parsley-errors-container="#password-confirmation-errors" data-parsley-required-message="{{'Please enter confirm password'}}" data-parsley-equalto-message="{{'The passwords you entered do not match'}}" data-parsley-equalto="#password" />
+                        <i class="fa fa-eye" style="position:absolute;right:2%;top:50%;transform:translate(-50%,-50%);cursor: pointer;" onclick="myFunction('confirmpassword')"></i>
+                    </div>
                     <span class="text-danger" id="password-confirmation-errors"></span>
                     @error('password_confirmation')
                     <div class="invalid-feedback"><div >{{$message}}</div></div>

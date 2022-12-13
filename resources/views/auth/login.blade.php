@@ -31,8 +31,11 @@
                         <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
                     </div>
                     <!--begin::Input-->
-                    <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" autocomplete="off" placeholder="Password" data-parsley-required="true"
-                    data-parsley-required-message="{{ __('Please enter password') }}" data-parsley-errors-container="#password-errors"/>
+                    <div style="position: relative;width:100%">
+                        <input tabindex="2" class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" id="password" name="password" autocomplete="off" placeholder="Password" data-parsley-required="true"
+                        data-parsley-required-message="{{ __('Please enter password') }}" data-parsley-errors-container="#password-errors"/>
+                        <i class="fa fa-eye" style="position:absolute;right:2%;top:50%;transform:translate(-50%,-50%);cursor: pointer;" onclick="myPassFunction()"></i>
+                    </div>
                     <span class="text-danger" id="password-errors"></span>
                     @error('password')
                     <div class=" invalid-feedback"><div >{{$message}}</div></div>

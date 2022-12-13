@@ -36,7 +36,7 @@
                     </div>
                 </td>
                 <td>
-                    <!-- <a class="btn btn-sm btn-primary" href="{{route('users.edit',$user->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a> -->
+                    <a class="btn btn-sm btn-primary" href="{{route('users.edit',$user->id)}}"><i class="fas fa-edit" style="margin-left: 5px;"></i></a>
 
                     <button class="btn btn-sm btn-danger delete_row" data-title="user" data-href="{{route('users.destroy',$user->id)}}" data-user_id ="{{$user->id}}" data-kt-customer-table-filter="delete_row" ><i class="fas fa-trash" style="margin-left: 5px;"></i></button>
                 </td>

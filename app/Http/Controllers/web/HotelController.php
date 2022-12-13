@@ -7,10 +7,12 @@ use App\Http\Requests\web\HotelsRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Hotel;
 use App\Models\User;
+use App\Models\HotelImage;
 use App\Models\PhoneCode;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Classes\Helper\CommonUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class HotelController extends Controller
@@ -104,16 +106,39 @@ class HotelController extends Controller
                 'role'           => 3,
                 'password'       => Hash::make($request->password) ,
             ];
+           
             $user = User::create($userdata);
             if($user){
                 $data['user_id'] = $user->id;
             }
-            if(Hotel::create($data)){
-                return redirect()->route('hotels.index')->with('toast-success',"Hotel added successfully");
+            if ( request()->has('feature_image')){
+                $image = $request->file('feature_image');
+                $image_name = time().'.'.$image->extension();
+                $destinationPath = public_path('uploads/feature_image');
+                $image->move($destinationPath, $image_name);
+                $data['feature_image'] = $image_name;
+            }
+            
+            $hotel = Hotel::create($data);
+            if($hotel){
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $imageFile) {
+                        $image = $imageFile;
+                        $image_name = time().'.'.$imageFile->extension();
+                        $destinationPath = public_path('uploads/images');
+                        $image->move($destinationPath, $image_name);
+                        $image = new HotelImage();
+                        $image->hotel_id = $hotel->id;
+                        $image->name = $image_name;
+                        $image->save();
+                    }
+                }
+                return redirect()->route('hotels.index')->with('toast-success',"Hotel update successfully");
             }
         }
         catch (\Exception $exception){
-            return redirect()->route('hotels.index')->with('toast-error',"Something went wrong");
+            dd($exception);
+            return redirect()->route('hotels.index')->with('toast-error',$exception);
         }
     }
 
@@ -133,7 +158,7 @@ class HotelController extends Controller
             return view('hotels.show',compact('hotel'));
         }
         catch (\Exception $exception){
-            return redirect()->route('hotels.index')->withError("Something wrong");
+            return redirect()->route('hotels.index')->with('toast-error',"Something went wrong");
         }
     }
 
@@ -148,12 +173,16 @@ class HotelController extends Controller
         try {
             $hotel=Hotel::where('id',$id)->first();
             if(is_null($hotel)){
-                return redirect()->route('hotels.index')->withError("Hotel not found.");
+                return redirect()->route('hotels.index')->with('toast-error',"Hotel not found");
             }
-            return view('hotels.edit',compact('hotel'));
+            $phone_codes = PhoneCode::get();
+            $user= User::findOrFail($hotel->user_id); 
+            $hotel_images = '';
+            $hotel_images = HotelImage::where('hotel_id',$hotel->id)->get();
+            return view('hotels.edit',compact('hotel','phone_codes','user','hotel_images'));
         }
         catch (\Exception $exception){
-            return redirect()->route('hotels.index')->withError("Something went wrong");
+            return redirect()->route('hotels.index')->with('toast-error',"Something went wrong");
         }
     }
 
@@ -167,20 +196,50 @@ class HotelController extends Controller
     public function update(HotelsRequest $request, int $id)
     {
         try {
-            $status = [1,2];
-            $input_data = $request->validated();
-            $user = Hotel::where('id',$id)->first();
-            $user->name=trim($input_data['hotel_name']);
-            $user->status=in_array($input_data['status'],$status) ? $input_data['status'] : 1;
-            if($user->save()){
-                return redirect()->route('hotels.index')->withSuccess("Hotel updated successfully.");
+            $data = $request->all();
+            $userdata = [
+                'first_name'     => $request->first_name,
+                'last_name'      => $request->last_name,
+                'phone_code'     => $request->phone_code,
+                'mobile_number'  => $request->mobile_number,
+                'role'           => 2,
+            ];
+            
+            $user = User::where('id',$request->user_id)->update($userdata);
+   
+            if ( request()->has('feature_image')){
+                $image = $request->file('feature_image');
+                $image_name = time().'.'.$image->extension();
+                $destinationPath = public_path('uploads/feature_image');
+                $image->move($destinationPath, $image_name);
+                $data['feature_image'] = $imageName;
             }
-            else{
-                return redirect()->route('hotels.index')->withError("Hotel not updated.Please try again.");
+            unset($data['first_name']);
+            unset($data['last_name']);
+            unset($data['phone_code']);
+            unset($data['mobile_number']);
+            unset($data['email']);
+            unset($data['_method']);
+            unset($data['_token']);
+            $hotel = Hotel::where('id',$id)->update($data);
+            if($hotel){
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $imageFile) {
+                        $image = $imageFile;
+                        $image_name = time().'.'.$imageFile->extension();
+                        $destinationPath = public_path('uploads/images');
+                        $image->move($destinationPath, $image_name);
+                        $image = new HotelImage();
+                        $image->hotel_id = $hotel->id;
+                        $image->name = $imageName;
+                        $image->save();
+                    }
+                }
+                return redirect()->route('hotels.index')->with('toast-success',"Hotel update successfully");
             }
         }
         catch (\Exception $exception){
-            return redirect()->route('hotels.index')->withError("Something wrong");
+            return redirect()->route('hotels.index')->with('toast-error',$exception);
         }
     }
 

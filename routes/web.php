@@ -5,6 +5,7 @@ use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\HotelController;
 use App\Http\Controllers\web\ProfileController;
 use App\Http\Controllers\web\UserController;
+use App\Http\Controllers\web\MyHotelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function (){
     Route::post("profile/update",[ProfileController::class,'update'])->name('profile.update');
     Route::get("change_password",[ProfileController::class,'password_index'])->name('password.index');
     
+
+    Route::group(['middleware' => 'admin'], function () {
     /**
      * users routes
      */
@@ -43,6 +46,14 @@ Route::middleware('auth')->group(function (){
      */
     Route::resource('hotels', HotelController::class);
     Route::Post('hotel-status',[HotelController::class,'update_status'])->name('hotels.update_status');
+    
+    });
+
+    /**
+     * my hotel routes
+     */
+    Route::get('my-hotel',[MyHotelController::class,'index'])->name('my.hotel');
+
 
 });
 Auth::routes();
